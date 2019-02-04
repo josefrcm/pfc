@@ -1,0 +1,2015 @@
+#LyX 1.5.4 created this file. For more info see http://www.lyx.org/
+\lyxformat 276
+\begin_document
+\begin_header
+\textclass scrbook
+\language spanish
+\inputencoding auto
+\font_roman palatino
+\font_sans default
+\font_typewriter default
+\font_default_family default
+\font_sc false
+\font_osf false
+\font_sf_scale 100
+\font_tt_scale 100
+\graphics default
+\paperfontsize 11
+\spacing onehalf
+\papersize a4paper
+\use_geometry true
+\use_amsmath 1
+\use_esint 0
+\cite_engine basic
+\use_bibtopic false
+\paperorientation portrait
+\leftmargin 2cm
+\topmargin 2cm
+\rightmargin 2cm
+\bottommargin 2cm
+\footskip 1cm
+\secnumdepth 3
+\tocdepth 3
+\paragraph_separation indent
+\defskip medskip
+\quotes_language english
+\papercolumns 1
+\papersides 1
+\paperpagestyle plain
+\tracking_changes false
+\output_changes false
+\author "" 
+\author "" 
+\end_header
+
+\begin_body
+
+\begin_layout Chapter
+Reglas de creación de zonas
+\end_layout
+
+\begin_layout Itemize
+Zona IPv4:
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula \[
+\begin{array}{c}
+R_{4}\left(\leftrightarrow R_{4}\right)\star=Z_{4}\\
+\Downarrow\\
+A1\diamond N1\leftrightarrow R_{4}\left(\leftrightarrow R_{4}\right)\star\leftrightarrow N2\diamond A2=A1\diamond N1\leftrightarrow Z_{4}\leftrightarrow N2\diamond A2\end{array}\]
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Itemize
+Zona IPv6:
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula \[
+\begin{array}{c}
+R_{6}\left(\leftrightarrow R_{6}\right)\star=Z_{6}\\
+\Downarrow\\
+A1\diamond N1\leftrightarrow R_{6}\left(\leftrightarrow R_{6}\right)\star\leftrightarrow N2\diamond A2=A1\diamond N1\leftrightarrow Z_{6}\leftrightarrow N2\diamond A2\end{array}\]
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Itemize
+Zona dual:
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula \[
+\begin{array}{c}
+R_{d}\left(\leftrightarrow R_{d}\right)\star=Z_{d}\\
+\Downarrow\\
+A1\diamond N1\leftrightarrow R_{d}\left(\leftrightarrow R_{d}\right)\star\leftrightarrow N2\diamond A2=A1\diamond N1\leftrightarrow Z_{d}\leftrightarrow N2\diamond A2\end{array}\]
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Itemize
+Zona vacía:
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula \[
+A1\diamond N1\leftrightarrow N2\diamond A2=A1\diamond N1\leftrightarrow Z_{d}\leftrightarrow N2\diamond A2\]
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Chapter
+Operadores de conexión
+\end_layout
+
+\begin_layout Itemize
+Operador de conexión dual (
+\begin_inset Formula $\otimes_{d}$
+\end_inset
+
+):
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula \[
+\begin{array}{l}
+Z_{i}\leftrightarrow R_{d}\left(\leftrightarrow R_{d}\right)\star\leftrightarrow Z_{j}=Z_{i}\leftrightarrow Z_{d}\leftrightarrow Z_{j}=Z_{i}\otimes_{d}Z_{j}\\
+\textrm{\qquad donde}\; Z_{i},Z_{j}\in\left\{ Z_{4},Z_{6}\right\} \end{array}\]
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Itemize
+Operador de conexión IPv4 con traducción de direcciones IPv4 (
+\begin_inset Formula $\odot_{4}$
+\end_inset
+
+):
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula \[
+Z_{i}\leftrightarrow R_{4}^{t}\leftrightarrow Z_{j}=Z_{i}\odot_{4}Z_{j}\]
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Itemize
+Operador de conexión dual con traducción de direcciones IPv4 (
+\begin_inset Formula $\odot_{d}$
+\end_inset
+
+):
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula \[
+\begin{array}{l}
+Z_{i}\leftrightarrow\left(Z_{d}\leftrightarrow\right)\star R_{d}^{t}\left(\leftrightarrow Z_{d}\right)\star\leftrightarrow Z_{j}=Z_{i}\odot_{d}Z_{j}\\
+\textrm{\qquad donde}\; Z_{i},Z_{j}\in\left\{ Z_{4},Z_{6}\right\} \end{array}\]
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Itemize
+Operador de conexión dual con traducción de protocolos IPv4 e IPv6 (
+\begin_inset Formula $\boxtimes_{d}$
+\end_inset
+
+):
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula \[
+\begin{array}{l}
+Z_{i}\leftrightarrow\left(Z_{d}\leftrightarrow\right)\star R_{d,TP}\left(\leftrightarrow Z_{d}\right)\star\leftrightarrow Z_{j}=Z_{i}\boxtimes_{d}Z_{j}\\
+\textrm{\qquad donde}\; Z_{i},Z_{j}\in\left\{ Z_{4},Z_{6}\right\} ,Z_{i}\neq Z_{j}\end{array}\]
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Itemize
+Operador de conexión dual con traducción de direcciones IPv4 y traducción
+ de protocolos IPv4 e IPv6 (
+\begin_inset Formula $\boxdot_{d}$
+\end_inset
+
+):
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula \[
+\begin{array}{l}
+Z_{i}\leftrightarrow\left(Z_{d}\leftrightarrow\right)\star R_{d,TP}^{t}\left(\leftrightarrow Z_{d}\right)\star\leftrightarrow Z_{j}=Z_{i}\boxdot_{d}Z_{j}\\
+\textrm{\qquad donde}\; Z_{i},Z_{j}\in\left\{ Z_{4},Z_{6}\right\} ,Z_{i}\neq Z_{j}\end{array}\]
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Chapter
+Canonización
+\end_layout
+
+\begin_layout Itemize
+Conexión de zonas IPv4 utilizando 
+\begin_inset Formula $\otimes_{d}$
+\end_inset
+
+:
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula \[
+Z_{4}\left(\otimes_{d}Z_{4}\right)=Z_{4}\]
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Itemize
+Conexión de zonas IPv4 utilizando 
+\begin_inset Formula $\odot_{d}$
+\end_inset
+
+:
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula \[
+Z_{4}\left(\odot_{d}Z_{4}\right)=Z_{4}\odot_{4}Z_{4}\]
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Itemize
+Conexión de zonas IPv4 utilizando 
+\begin_inset Formula $\boxdot_{d}$
+\end_inset
+
+:
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula \[
+Z_{4}\left(\boxdot_{d}Z_{4}\right)=Z_{4}\odot_{4}Z_{4}\]
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Itemize
+Conexión de zonas IPv6 utilizando 
+\begin_inset Formula $\otimes_{d}$
+\end_inset
+
+:
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula \[
+Z_{6}\left(\otimes_{d}Z_{6}\right)\star=Z_{6}\]
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Itemize
+Conexión de zonas IPv6 utilizando 
+\begin_inset Formula $\boxtimes_{d}$
+\end_inset
+
+:
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula \[
+Z_{6}\left(\boxtimes_{d}Z_{6}\right)\star=Z_{6}\left(\otimes_{d}Z_{6}\right)\star=Z_{6}\]
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Itemize
+Conexión de zonas IPv6 utilizando 
+\begin_inset Formula $\odot_{d}$
+\end_inset
+
+ ó 
+\begin_inset Formula $\boxdot_{d}$
+\end_inset
+
+:
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula \[
+Z_{6}\boxdot_{d}Z_{6}=Z_{6}\odot_{d}Z_{6}=Z_{6}\]
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Itemize
+Conexión de zonas duales utilizando 
+\begin_inset Formula $\otimes_{d}$
+\end_inset
+
+:
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula \[
+Z_{d}\left(\otimes_{d}Z_{d}\right)\star=Z_{d}\]
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Itemize
+Conexión de una zona dual en una posición intermedia utilizando 
+\begin_inset Formula $\otimes_{d}$
+\end_inset
+
+:
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula \[
+\begin{array}{l}
+Z_{i}\otimes_{d}Z_{d}\left(\otimes_{d}Z_{d}\right)\star\otimes_{d}Z_{j}=Z_{i}\otimes_{d}Z_{j}\\
+\textrm{\qquad donde}\; Z_{i},Z_{j}\in\left\{ Z_{4},Z_{6},Z_{d}\right\} \end{array}\]
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Chapter
+Transformaciones de escenarios de transición
+\end_layout
+
+\begin_layout Section
+Mecanismos de transición entre zonas
+\end_layout
+
+\begin_layout Subsection
+Túneles manuales
+\end_layout
+
+\begin_layout Itemize
+IPv4 dentro de IPv6:
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula \[
+\begin{array}{l}
+T_{v6\left(v4\right)}\left(A1\diamond N1\leftrightarrow Z_{4}op_{1}Z_{6}op_{2}Z_{4}\leftrightarrow N2\diamond A2\right)=A1\diamond N1\leftrightarrow Z_{4}\leftrightarrow N2\diamond A2\\
+\textrm{\qquad donde}\; op_{1},op_{2}\in\left\{ \otimes_{d},\boxtimes_{d}\right\} \end{array}\]
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula \[
+\begin{array}{l}
+T_{v6\left(v4\right)}\left(A1\diamond N1\leftrightarrow Z_{4}op_{1}Z_{6}op_{2}Z_{4}\leftrightarrow N2\diamond A2\right)=A1\diamond N1\leftrightarrow Z_{4}\odot_{4}Z_{4}\leftrightarrow N2\diamond A2\\
+\textrm{\qquad donde}\; op_{1}\in\left\{ \otimes_{d},\boxtimes_{d}\right\} ,op_{2}\in\left\{ \odot_{d},\boxdot_{d}\right\} \end{array}\]
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula \[
+\begin{array}{l}
+T_{v6\left(v4\right)}\left(A1\diamond N1\leftrightarrow Z_{4}op_{1}Z_{6}op_{2}Z_{4}\leftrightarrow N2\diamond A2\right)=A1\diamond N1\leftrightarrow Z_{4}\odot_{4}Z_{4}\odot_{4}Z_{4}\leftrightarrow N2\diamond A2\\
+\textrm{\qquad donde}\; op_{1},op_{2}\in\left\{ \odot_{d},\boxdot_{d}\right\} \end{array}\]
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Itemize
+IPv6 dentro de IPv4:
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula \[
+\begin{array}{l}
+T_{v4\left(v6\right)}\left(A1\diamond N1\leftrightarrow Z_{6}op_{1}Z_{4}op_{2}Z_{6}\leftrightarrow N2\diamond A2\right)=A1\diamond N1\leftrightarrow Z_{6}\leftrightarrow N2\diamond A2\\
+\textrm{\qquad donde}\; op_{1},op_{2}\in\left\{ \otimes_{d},\boxtimes_{d},\odot_{d},\boxdot_{d}\right\} \end{array}\]
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Itemize
+IPv6 dentro de UDP IPv4:
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula \[
+\begin{array}{l}
+T_{udp\left(v4\left(v6\right)\right)}\left(A1\diamond N1\leftrightarrow Z_{6}op_{1}Z_{4}\left(\odot_{4}Z_{4}\right)\star op_{2}Z_{6}\leftrightarrow N2\diamond A2\right)=A1\diamond N1\leftrightarrow Z_{6}\leftrightarrow N2\diamond A2\\
+\textrm{\qquad donde}\; op_{1},op_{2}\in\left\{ \otimes_{d},\boxtimes_{d},\odot_{d},\boxdot_{d}\right\} \end{array}\]
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Subsection
+Broker de túneles
+\end_layout
+
+\begin_layout Itemize
+IPv4 dentro de IPv6:
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula \[
+\begin{array}{l}
+Broker_{v6\left(v4\right)}\left(A1\diamond N1\leftrightarrow Z_{4}op_{1}Z_{6}op_{2}Z_{4}\leftrightarrow N2\diamond A2\right)=A1\diamond N1\leftrightarrow Z_{4}\leftrightarrow N2\diamond A2\\
+\textrm{\qquad donde}\; op_{1},op_{2}\in\left\{ \otimes_{d},\boxtimes_{d}\right\} \end{array}\]
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula \[
+\begin{array}{l}
+Broker_{v6\left(v4\right)}\left(A1\diamond N1\leftrightarrow Z_{4}op_{1}Z_{6}op_{2}Z_{4}\leftrightarrow N2\diamond A2\right)=A1\diamond N1\leftrightarrow Z_{4}\odot_{4}Z_{4}\leftrightarrow N2\diamond A2\\
+\textrm{\qquad donde}\; op_{1}\in\left\{ \otimes_{d},\boxtimes_{d}\right\} ,op_{2}\in\left\{ \odot_{d},\boxdot_{d}\right\} \end{array}\]
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula \[
+\begin{array}{l}
+Broker_{v6\left(v4\right)}\left(A1\diamond N1\leftrightarrow Z_{4}op_{1}Z_{6}op_{2}Z_{4}\leftrightarrow N2\diamond A2\right)=A1\diamond N1\leftrightarrow Z_{4}\odot_{4}Z_{4}\odot_{4}Z_{4}\leftrightarrow N2\diamond A2\\
+\textrm{\qquad donde}\; op_{1},op_{2}\in\left\{ \odot_{d},\boxdot_{d}\right\} \end{array}\]
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Itemize
+IPv6 dentro de IPv4:
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula \[
+\begin{array}{l}
+Broker_{v4\left(v6\right)}\left(A1\diamond N1\leftrightarrow Z_{6}op_{1}Z_{4}op_{2}Z_{6}\leftrightarrow N2\diamond A2\right)=A1\diamond N1\leftrightarrow Z_{6}\leftrightarrow N2\diamond A2\\
+\textrm{\qquad donde}\; op_{1},op_{2}\in\left\{ \otimes_{d},\boxtimes_{d},\odot_{d},\boxdot_{d}\right\} \end{array}\]
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Itemize
+IPv6 dentro de UDP IPv4:
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula \[
+\begin{array}{l}
+Broker_{udp\left(v4\left(v6\right)\right)}\left(A1\diamond N1\leftrightarrow Z_{6}op_{1}Z_{4}\left(\odot_{4}Z_{4}\right)\star op_{2}Z_{6}\leftrightarrow N2\diamond A2\right)=A1\diamond N1\leftrightarrow Z_{6}\leftrightarrow N2\diamond A2\\
+\textrm{\qquad donde}\; op_{1},op_{2}\in\left\{ \otimes_{d},\boxtimes_{d},\odot_{d},\boxdot_{d}\right\} \end{array}\]
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Subsection
+Túneles 6to4
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula \[
+\begin{array}{l}
+6to4\left(A1\diamond N1\leftrightarrow Z_{6}op_{1}Z_{4}op_{2}Z_{6}\leftrightarrow N2\diamond A2\right)=A1\diamond N1\leftrightarrow Z_{6}\leftrightarrow N2\diamond A2\\
+\textrm{\qquad donde}\; op_{1},op_{2}\in\left\{ \otimes_{d},\boxtimes_{d},\odot_{d},\boxdot_{d}\right\} \end{array}\]
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Section
+Mecanismos de transición entre zona y nodo terminal
+\end_layout
+
+\begin_layout Subsection
+Túneles manuales
+\end_layout
+
+\begin_layout Itemize
+IPv4 dentro de IPv6:
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula \[
+\begin{array}{l}
+T_{v6\left(v4\right)}\left(A1\diamond\underline{N_{d}\leftrightarrow Z_{6}op_{1}Z_{4}}\leftrightarrow N2\diamond A2\right)=A1\diamond N_{d}\leftrightarrow Z_{4}\leftrightarrow N2\diamond A2\\
+\textrm{\qquad donde}\; op_{1}\in\left\{ \otimes_{d},\boxtimes_{d}\right\} \end{array}\]
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula \[
+\begin{array}{l}
+T_{v6\left(v4\right)}\left(A1\diamond\underline{N_{d}\leftrightarrow Z_{6}}op_{1}Z_{4}\leftrightarrow N2\diamond A2\right)=A1\diamond N_{d}\leftrightarrow Z_{4}\odot_{4}Z_{4}\leftrightarrow N2\diamond A2\\
+\textrm{\qquad donde}\; op_{1}\in\left\{ \odot_{d},\boxdot_{d}\right\} \end{array}\]
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Itemize
+IPv6 dentro de IPv4:
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula \[
+\begin{array}{l}
+T_{v4\left(v6\right)}\left(A1\diamond\underline{N_{d}\leftrightarrow Z_{4}op_{1}Z_{6}}\leftrightarrow N2\diamond A2\right)=A1\diamond N_{d}\leftrightarrow Z_{6}\leftrightarrow N2\diamond A2\\
+\textrm{\qquad donde}\; op_{1}\in\left\{ \otimes_{d},\boxtimes_{d},\odot_{d},\boxdot_{d}\right\} \end{array}\]
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Itemize
+IPv6 dentro de UDP IPv4:
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula \[
+\begin{array}{l}
+T_{udp\left(v4\left(v6\right)\right)}\left(A1\diamond\underline{N_{d}\leftrightarrow Z_{4}\left(\odot_{4}Z_{4}\right)\star op_{1}Z_{6}}\leftrightarrow N2\diamond A2\right)=A1\diamond N_{d}\leftrightarrow Z_{6}\leftrightarrow N2\diamond A2\\
+\textrm{\qquad donde}\; op_{1}\in\left\{ \otimes_{d},\boxtimes_{d},\odot_{d},\boxdot_{d}\right\} \end{array}\]
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Subsection
+Broker de túneles
+\end_layout
+
+\begin_layout Itemize
+IPv4 dentro de IPv6:
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula \[
+\begin{array}{l}
+Broker_{v6\left(v4\right)}\left(A1\diamond\underline{N_{d}\leftrightarrow Z_{6}op_{1}Z_{4}}\leftrightarrow N2\diamond A2\right)=A1\diamond N_{d}\leftrightarrow Z_{4}\leftrightarrow N2\diamond A2\\
+\textrm{\qquad donde}\; op_{1}\in\left\{ \otimes_{d},\boxtimes_{d}\right\} \end{array}\]
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula \[
+\begin{array}{l}
+Broker_{v6\left(v4\right)}\left(A1\diamond\underline{N_{d}\leftrightarrow Z_{6}}op_{1}Z_{4}\leftrightarrow N2\diamond A2\right)=A1\diamond N_{d}\leftrightarrow Z_{4}\odot_{4}Z_{4}\leftrightarrow N2\diamond A2\\
+\textrm{\qquad donde}\; op_{1}\in\left\{ \odot_{d},\boxdot_{d}\right\} \end{array}\]
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Itemize
+IPv6 dentro de IPv4:
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula \[
+\begin{array}{l}
+Broker_{v4\left(v6\right)}\left(A1\diamond\underline{N_{d}\leftrightarrow Z_{4}op_{1}Z_{6}}\leftrightarrow N2\diamond A2\right)=A1\diamond N_{d}\leftrightarrow Z_{6}\leftrightarrow N2\diamond A2\\
+\textrm{\qquad donde}\; op_{1}\in\left\{ \otimes_{d},\boxtimes_{d},\odot_{d},\boxdot_{d}\right\} \end{array}\]
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Itemize
+IPv6 dentro de UDP IPv4:
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula \[
+\begin{array}{l}
+Broker_{udp\left(v4\left(v6\right)\right)}\left(A1\diamond\underline{N_{d}\leftrightarrow Z_{4}\left(\odot_{4}Z_{4}\right)\star op_{1}Z_{6}}\leftrightarrow N2\diamond A2\right)=A1\diamond N_{d}\leftrightarrow Z_{6}\leftrightarrow N2\diamond A2\\
+\textrm{\qquad donde}\; op_{1}\in\left\{ \otimes_{d},\boxtimes_{d},\odot_{d},\boxdot_{d}\right\} \end{array}\]
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Subsection
+DSTM
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula \[
+\begin{array}{l}
+DSTM\left(A1\diamond\underline{N_{d}\leftrightarrow Z_{6}op_{1}Z_{4}}\leftrightarrow N2\diamond A2\right)=A1\diamond N1\leftrightarrow Z_{4}\leftrightarrow N2\diamond A2\\
+\textrm{\qquad donde}\; op_{1}\in\left\{ \otimes_{d},\boxtimes_{d}\right\} \end{array}\]
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula \[
+\begin{array}{l}
+DSTM\left(A1\diamond\underline{N_{d}\leftrightarrow Z_{6}op_{1}Z_{4}}\leftrightarrow N2\diamond A2\right)=A1\diamond N1\leftrightarrow Z_{4}op_{1}Z_{4}\leftrightarrow N2\diamond A2\\
+\textrm{\qquad donde}\; op_{1}\in\left\{ \odot_{d},\boxdot_{d}\right\} \end{array}\]
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Subsection
+Teredo
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula \[
+\begin{array}{l}
+Teredo\left(A1\diamond\underline{N_{d}\leftrightarrow Z_{4}\left(\odot_{4}Z_{4}\right)\star op_{1}Z_{6}}\leftrightarrow N2\diamond A2\right)=A1\diamond N1\leftrightarrow Z_{6}\leftrightarrow N2\diamond A2\\
+\textrm{\qquad donde}\; op_{1}\in\left\{ \otimes_{d},\boxtimes_{d},\odot_{d},\boxdot_{d}\right\} \end{array}\]
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Subsection
+ISATAP
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula \[
+\begin{array}{l}
+ISATAP\left(A1\diamond\underline{N_{d}\leftrightarrow Z_{4}op_{1}Z_{6}}\leftrightarrow N2\diamond A2\right)=A1\diamond N_{d}\leftrightarrow Z_{6}\leftrightarrow N2\diamond A2\\
+\textrm{\qquad donde}\; op_{1}\in\left\{ \otimes_{d},\boxtimes_{d}\right\} \end{array}\]
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Section
+Mecanismos de transición entre nodos terminales
+\end_layout
+
+\begin_layout Subsection
+Túneles manuales
+\end_layout
+
+\begin_layout Itemize
+IPv4 dentro de IPv6:
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula \[
+T_{v6\left(v4\right)}\left(A1\diamond\underline{N_{d}\leftrightarrow Z_{6}\leftrightarrow N_{d}}\diamond A2\right)=A1\diamond N_{d}\leftrightarrow Z_{4}\leftrightarrow N_{d}\diamond A2\]
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Itemize
+IPv6 dentro de IPv4:
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula \[
+T_{v4\left(v6\right)}\left(A1\diamond\underline{N_{d}\leftrightarrow Z_{4}\leftrightarrow N_{d}}\diamond A2\right)=A1\diamond N_{d}\leftrightarrow Z_{6}\leftrightarrow N_{d}\diamond A2\]
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Itemize
+IPv6 dentro de UDP IPv4:
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula \[
+T_{udp\left(v4\left(v6\right)\right)}\left(A1\diamond\underline{N_{d}\leftrightarrow Z_{4}\left(\odot_{4}Z_{4}\right)\star\leftrightarrow N_{d}}\diamond A2\right)=A1\diamond N_{d}\leftrightarrow Z_{6}\leftrightarrow N_{d}\diamond A2\]
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Subsection
+ISATAP
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula \[
+ISATAP\left(A1\diamond\underline{N_{d}\leftrightarrow Z_{4}\leftrightarrow N_{d}}\diamond A2\right)=A1\diamond N_{d}\leftrightarrow Z_{6}\leftrightarrow N_{d}\diamond A2\]
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Chapter
+Mecanismos de transición
+\end_layout
+
+\begin_layout Chapter
+Implementaciones alternativas
+\end_layout
+
+\begin_layout Itemize
+Otras canonizaciones:
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula \[
+Z_{4}\otimes_{d}Z_{4}=Z_{4}\]
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula \[
+Z_{4}\odot_{4}Z_{4}=Z_{4}\odot_{4}Z_{4}\]
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula \[
+Z_{4}\odot_{d}Z_{4}=Z_{4}\odot_{4}Z_{4}\]
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula \[
+Z_{4}\boxtimes_{d}Z_{4}=Z_{4}\]
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula \[
+Z_{4}\boxdot_{d}Z_{4}=Z_{4}\odot_{4}Z_{4}\]
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Itemize
+Página 188:
+\end_layout
+
+\begin_deeper
+\begin_layout Standard
+\align center
+\begin_inset Tabular
+<lyxtabular version="3" rows="8" columns="2">
+<features>
+<column alignment="center" valignment="top" leftline="true" width="0">
+<column alignment="center" valignment="top" leftline="true" rightline="true" width="0">
+<row topline="true">
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Standard
+Zonas IPv4
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Standard
+Resultado
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row topline="true">
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Standard
+\begin_inset Formula $Z_{4}\leftrightarrow R_{4}$
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Standard
+\begin_inset Formula $Z_{4}$
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row topline="true">
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Standard
+\begin_inset Formula $Z_{4}\leftrightarrow R_{6}$
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Standard
+\begin_inset Formula $error$
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row topline="true">
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Standard
+\begin_inset Formula $Z_{4}\leftrightarrow R_{d}$
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Standard
+\begin_inset Formula $Z_{4}\otimes_{d}Z_{d}$
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row topline="true">
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Standard
+\begin_inset Formula $Z_{4}\leftrightarrow R_{4}^{t}$
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Standard
+\begin_inset Formula $Z_{4}\odot_{4}Z_{4}$
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row topline="true">
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Standard
+\begin_inset Formula $Z_{4}\leftrightarrow R_{d}^{t}$
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Standard
+\begin_inset Formula $Z_{4}\odot_{d}Z_{d}$
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row topline="true">
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Standard
+\begin_inset Formula $Z_{4}\leftrightarrow R_{d,TP}$
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Standard
+\begin_inset Formula $Z_{4}\boxtimes_{d}Z_{d}$
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row topline="true" bottomline="true">
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Standard
+\begin_inset Formula $Z_{4}\leftrightarrow R_{d,TP}^{t}$
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Standard
+\begin_inset Formula $Z_{4}\boxdot_{d}Z_{d}$
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+</row>
+</lyxtabular>
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\align center
+\begin_inset Tabular
+<lyxtabular version="3" rows="8" columns="2">
+<features>
+<column alignment="center" valignment="top" leftline="true" width="0">
+<column alignment="center" valignment="top" leftline="true" rightline="true" width="0">
+<row topline="true">
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Standard
+Zonas IPv6
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Standard
+Resultado
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row topline="true">
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Standard
+\begin_inset Formula $Z_{6}\leftrightarrow R_{4}$
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Standard
+\begin_inset Formula $error$
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row topline="true">
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Standard
+\begin_inset Formula $Z_{6}\leftrightarrow R_{6}$
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Standard
+\begin_inset Formula $Z_{6}$
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row topline="true">
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Standard
+\begin_inset Formula $Z_{6}\leftrightarrow R_{d}$
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Standard
+\begin_inset Formula $Z_{6}\otimes_{d}Z_{d}$
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row topline="true">
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Standard
+\begin_inset Formula $Z_{6}\leftrightarrow R_{4}^{t}$
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Standard
+\begin_inset Formula $error$
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row topline="true">
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Standard
+\begin_inset Formula $Z_{6}\leftrightarrow R_{d}^{t}$
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Standard
+\begin_inset Formula $Z_{6}\odot_{d}Z_{d}$
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row topline="true">
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Standard
+\begin_inset Formula $Z_{6}\leftrightarrow R_{d,TP}$
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Standard
+\begin_inset Formula $Z_{6}\boxtimes_{d}Z_{d}$
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row topline="true" bottomline="true">
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Standard
+\begin_inset Formula $Z_{6}\leftrightarrow R_{d,TP}^{t}$
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Standard
+\begin_inset Formula $Z_{6}\boxdot_{d}Z_{d}$
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+</row>
+</lyxtabular>
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\align center
+\begin_inset Tabular
+<lyxtabular version="3" rows="8" columns="2">
+<features>
+<column alignment="center" valignment="top" leftline="true" width="0">
+<column alignment="center" valignment="top" leftline="true" rightline="true" width="0">
+<row topline="true">
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Standard
+Zonas duales
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Standard
+Resultado
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row topline="true">
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Standard
+\begin_inset Formula $Z_{d}\leftrightarrow R_{4}$
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Standard
+\begin_inset Formula $Z_{d}\otimes_{d}Z_{4}$
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row topline="true">
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Standard
+\begin_inset Formula $Z_{d}\leftrightarrow R_{6}$
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Standard
+\begin_inset Formula $Z_{d}\otimes_{d}Z_{6}$
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row topline="true">
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Standard
+\begin_inset Formula $Z_{d}\leftrightarrow R_{d}$
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Standard
+\begin_inset Formula $Z_{d}$
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row topline="true">
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Standard
+\begin_inset Formula $Z_{d}\leftrightarrow R_{4}^{t}$
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Standard
+\begin_inset Formula $Z_{d}\odot_{4}Z_{4}$
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row topline="true">
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Standard
+\begin_inset Formula $Z_{d}\leftrightarrow R_{d}^{t}$
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Standard
+\begin_inset Formula $Z_{d}\odot_{d}Z_{d}$
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row topline="true">
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Standard
+\begin_inset Formula $Z_{d}\leftrightarrow R_{d,TP}$
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Standard
+\begin_inset Formula $Z_{d}\boxtimes_{d}Z_{d}$
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row topline="true" bottomline="true">
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Standard
+\begin_inset Formula $Z_{d}\leftrightarrow R_{d,TP}^{t}$
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Standard
+\begin_inset Formula $Z_{d}\boxdot_{d}Z_{d}$
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+</row>
+</lyxtabular>
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\align center
+\begin_inset Tabular
+<lyxtabular version="3" rows="4" columns="8">
+<features>
+<column alignment="center" valignment="top" leftline="true" width="0">
+<column alignment="center" valignment="top" leftline="true" width="0">
+<column alignment="center" valignment="top" leftline="true" width="0">
+<column alignment="center" valignment="top" leftline="true" width="0">
+<column alignment="center" valignment="top" leftline="true" width="0">
+<column alignment="center" valignment="top" leftline="true" width="0">
+<column alignment="center" valignment="top" leftline="true" width="0">
+<column alignment="center" valignment="top" leftline="true" rightline="true" width="0">
+<row topline="true" bottomline="true">
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Standard
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Standard
+\begin_inset Formula $R_{4}$
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Standard
+\begin_inset Formula $R_{6}$
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Standard
+\begin_inset Formula $R_{d}$
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Standard
+\begin_inset Formula $R_{4}^{t}$
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Standard
+\begin_inset Formula $R_{d}^{t}$
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Standard
+\begin_inset Formula $R_{d,TP}$
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Standard
+\begin_inset Formula $R_{d,TP}^{t}$
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row topline="true">
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Standard
+\begin_inset Formula $Z_{4}$
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Standard
+\begin_inset Formula $Z_{4}$
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Standard
+\begin_inset Formula $error$
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Standard
+\begin_inset Formula $Z_{4}\otimes_{d}Z_{d}$
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Standard
+\begin_inset Formula $Z_{4}\odot_{4}Z_{4}$
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Standard
+\begin_inset Formula $Z_{4}\odot_{d}Z_{d}$
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Standard
+\begin_inset Formula $Z_{4}\boxtimes_{d}Z_{d}$
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Standard
+\begin_inset Formula $Z_{4}\boxdot_{d}Z_{d}$
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row topline="true">
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Standard
+\begin_inset Formula $Z_{6}$
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Standard
+\begin_inset Formula $error$
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Standard
+\begin_inset Formula $Z_{6}$
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Standard
+\begin_inset Formula $Z_{6}\otimes_{d}Z_{d}$
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Standard
+\begin_inset Formula $error$
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Standard
+\begin_inset Formula $Z_{6}\odot_{d}Z_{d}$
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Standard
+\begin_inset Formula $Z_{6}\boxtimes_{d}Z_{d}$
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Standard
+\begin_inset Formula $Z_{6}\boxdot_{d}Z_{d}$
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row topline="true" bottomline="true">
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Standard
+\begin_inset Formula $Z_{d}$
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Standard
+\begin_inset Formula $Z_{d}\otimes_{d}Z_{4}$
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Standard
+\begin_inset Formula $Z_{d}\otimes_{d}Z_{6}$
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Standard
+\begin_inset Formula $Z_{d}$
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Standard
+\begin_inset Formula $Z_{d}\odot_{4}Z_{4}$
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Standard
+\begin_inset Formula $Z_{d}\odot_{d}Z_{d}$
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Standard
+\begin_inset Formula $Z_{d}\boxtimes_{d}Z_{d}$
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Standard
+\begin_inset Formula $Z_{d}\boxdot_{d}Z_{d}$
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+</row>
+</lyxtabular>
+
+\end_inset
+
+
+\end_layout
+
+\end_deeper
+\begin_layout Chapter
+Tipos en Haskell
+\end_layout
+
+\begin_layout Standard
+\align center
+\begin_inset Tabular
+<lyxtabular version="3" rows="5" columns="2">
+<features>
+<column alignment="center" valignment="top" leftline="true" width="0">
+<column alignment="center" valignment="top" leftline="true" rightline="true" width="0">
+<row topline="true">
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Standard
+OpD
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Standard
+\begin_inset Formula $\otimes_{d}$
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row topline="true">
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Standard
+Op4t
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Standard
+\begin_inset Formula $\odot_{4}$
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row topline="true">
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Standard
+OpDt
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Standard
+\begin_inset Formula $\odot_{d}$
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row topline="true">
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Standard
+OpDtp
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Standard
+\begin_inset Formula $\boxtimes_{d}$
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+</row>
+<row topline="true" bottomline="true">
+<cell alignment="center" valignment="top" topline="true" leftline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Standard
+OpDtpt
+\end_layout
+
+\end_inset
+</cell>
+<cell alignment="center" valignment="top" topline="true" leftline="true" rightline="true" usebox="none">
+\begin_inset Text
+
+\begin_layout Standard
+\begin_inset Formula $\boxdot_{d}$
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+</row>
+</lyxtabular>
+
+\end_inset
+
+
+\end_layout
+
+\end_body
+\end_document

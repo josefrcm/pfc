@@ -1,0 +1,221 @@
+#LyX 1.5.4 created this file. For more info see http://www.lyx.org/
+\lyxformat 276
+\begin_document
+\begin_header
+\textclass scrartcl
+\language spanish
+\inputencoding auto
+\font_roman palatino
+\font_sans default
+\font_typewriter default
+\font_default_family default
+\font_sc false
+\font_osf false
+\font_sf_scale 100
+\font_tt_scale 100
+\graphics default
+\paperfontsize 11
+\spacing single
+\papersize a4paper
+\use_geometry true
+\use_amsmath 1
+\use_esint 0
+\cite_engine basic
+\use_bibtopic false
+\paperorientation portrait
+\leftmargin 2cm
+\topmargin 2cm
+\rightmargin 2cm
+\bottommargin 3cm
+\footskip 1cm
+\secnumdepth 3
+\tocdepth 3
+\paragraph_separation indent
+\defskip medskip
+\quotes_language swedish
+\papercolumns 1
+\papersides 1
+\paperpagestyle default
+\tracking_changes false
+\output_changes false
+\author "" 
+\author "" 
+\end_header
+
+\begin_body
+
+\begin_layout Part*
+10-11-2008
+\end_layout
+
+\begin_layout Section
+Mejoras al programa
+\end_layout
+
+\begin_layout Itemize
+He añadido tres tipos de costes: latencia, ancho de banda, y una métrica
+ general definida por el usuario.
+ A la hora de buscar las soluciones, se calcula cada uno de los costes por
+ separado.
+ Como ya se habló, el coste total es la suma de los mecanismos aplicados
+ y de los enlaces por los que pasa la ruta.
+\end_layout
+
+\begin_layout Itemize
+Me surge una duda para el ancho de banda: mientras que las latencias se
+ suman, creo el ancho de banda total de una ruta debería ser el de el enlace
+ más lento.
+ Habría que estudiar ese detalle.
+\end_layout
+
+\begin_layout Itemize
+Para guardar los costes he añadido tres atributos a la definición de los
+ nodos en los ficheros GML.
+ Estos atributos son 
+\emph on
+latency
+\emph default
+, 
+\emph on
+bandwidth
+\emph default
+ y 
+\emph on
+metric
+\emph default
+.
+ Se representan como números reales.
+\end_layout
+
+\begin_layout Itemize
+Por último, he creado un diálogo para que el usuario pueda definir los costes
+ de cada mecanismos de transición, de la siguiente manera:
+\end_layout
+
+\begin_deeper
+\begin_layout Standard
+\align center
+\begin_inset Graphics
+	filename captura1.png
+
+\end_inset
+
+
+\end_layout
+
+\end_deeper
+\begin_layout Itemize
+He completado el diálogo de selección de los parámetros para las búsquedas.
+ Ahora se valida la entrada, para asegurar que el usuario no ha introducido
+ parámetros incorrectos, y se guardan las opciones entre una búsqueda y
+ otra.
+ El diálogo se divide en dos partes: una para configurar el origen de las,
+ y otra para el destino.
+ En cada parte se puede elegir el router correspondiente, el tipo de aplicación
+ final, y el protocolo usado por el nodo terminal.
+ El resultado es el siguiente:
+\end_layout
+
+\begin_deeper
+\begin_layout Standard
+\align center
+\begin_inset Graphics
+	filename captura2.png
+
+\end_inset
+
+
+\end_layout
+
+\end_deeper
+\begin_layout Itemize
+En cuanto a la ventana principal, he añadido un nuevo botón para la opción
+ de editar enlaces, junto con los campos correspondientes para establecer
+ los nuevos valores.
+ También he incluido las dos nuevas columnas en la ventana de costes.
+ El usuario puede elegir la columna por la que ordenar los resultados pinchando
+ en la cabecera, sin tener que recalcular las rutas.
+ La opción para cambiar el tipo de un nodo ya funciona; sólo hay que elegir
+ uno o más nodos, y seleccionar el nuevo tipo en la lista desplegable.
+ El aspecto final es el siguiente:
+\end_layout
+
+\begin_deeper
+\begin_layout Standard
+\align center
+\begin_inset Graphics
+	filename captura3.png
+	lyxscale 50
+	width 14cm
+
+\end_inset
+
+
+\end_layout
+
+\end_deeper
+\begin_layout Itemize
+Como último comentario, he descubierto que existe un plugin para Eclipse
+ para trabajar con proyectos escritos en Haskell.
+ Hasta ahora estaba usando un editor de texto y un 
+\emph on
+Makefile
+\emph default
+ escrito a mano, pero creo que usar un IDE es mejor opción, o al menos causa
+ mejor impresión.
+\end_layout
+
+\begin_layout Standard
+
+\newpage
+
+\end_layout
+
+\begin_layout Section
+Tareas pendientes
+\end_layout
+
+\begin_layout Itemize
+Aunque el diálogo para introducir los costes está terminado, estos valores
+ aún no se tienen en cuenta.
+ Por eso en las columnas 
+\emph on
+ancho de banda
+\emph default
+ y 
+\emph on
+métrica
+\emph default
+ todos los valores son 0.
+ Hay que arreglar ese aspecto, y completar las opciones para definir los
+ costes de los propios enlaces.
+\end_layout
+
+\begin_layout Itemize
+He pensado que, para mostrar las soluciones con más detalle, el usuario
+ podría hacer doble click en uno de los elementos de la lista de resultados,
+ momento en el cual el programa mostraría una nueva ventana con la solución
+ detallada.
+ He implementado una versión preliminar, pero no maneja bien el texto en
+ Unicode y lo único que aparece son caracteres ininteligibles.
+\end_layout
+
+\begin_layout Itemize
+Convendría añadir una opción para poder desplazar la topología, de manera
+ que pudiera ser más grande que la pantalla.
+\end_layout
+
+\begin_layout Itemize
+Por último, quedaría completar la batería de pruebas, y terminar de limpiar
+ y documentar el código.
+ Aparte de eso, creo que la implementación estaría completa.
+\end_layout
+
+\begin_layout Itemize
+Adjunto también la propuesta de índice.
+ No he hecho nada aún de ingeniería de software porque quiero que lo hablemos
+ primero, pero tengo varias ideas en cuanto a diagramas que se podrían añadir.
+\end_layout
+
+\end_body
+\end_document

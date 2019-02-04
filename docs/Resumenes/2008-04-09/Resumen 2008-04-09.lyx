@@ -1,0 +1,190 @@
+#LyX 1.5.4 created this file. For more info see http://www.lyx.org/
+\lyxformat 276
+\begin_document
+\begin_header
+\textclass scrartcl
+\language spanish
+\inputencoding auto
+\font_roman palatino
+\font_sans default
+\font_typewriter default
+\font_default_family default
+\font_sc false
+\font_osf false
+\font_sf_scale 100
+\font_tt_scale 100
+\graphics default
+\paperfontsize 11
+\spacing single
+\papersize a4paper
+\use_geometry true
+\use_amsmath 1
+\use_esint 0
+\cite_engine basic
+\use_bibtopic false
+\paperorientation portrait
+\leftmargin 2cm
+\topmargin 2cm
+\rightmargin 2cm
+\bottommargin 2cm
+\footskip 1cm
+\secnumdepth 3
+\tocdepth 3
+\paragraph_separation indent
+\defskip medskip
+\quotes_language english
+\papercolumns 1
+\papersides 1
+\paperpagestyle default
+\tracking_changes false
+\output_changes false
+\author "" 
+\author "" 
+\end_header
+
+\begin_body
+
+\begin_layout Part*
+9-4-2008
+\end_layout
+
+\begin_layout Section
+Implementación de las reglas
+\end_layout
+
+\begin_layout Itemize
+He implementado las reglas de creación de zonas, operadores de conexión
+ y canonización con HaRP.
+ El código se encuentra en el directorio 
+\emph on
+Reglas
+\emph default
+, ficheros con extensión 
+\emph on
+hsx
+\emph default
+.
+ En general, la implementación es muy compacta, aunque en ocasiones es tan
+ densa que resulta difícil de leer.
+ Tengo que ver si hay alguna manera de que queden más legibles.
+\end_layout
+
+\begin_layout Itemize
+He movido las baterías de pruebas al fichero 
+\emph on
+Reglas/Test.hs
+\emph default
+.
+ De momento no se me han ocurrido pruebas nuevas aparte de las que ya comenté,
+ tengo que seguir trabajando en ello ya que creo que es un aspecto muy important
+e.
+\end_layout
+
+\begin_layout Itemize
+Hasta ahora, los tipos de datos enumerados derivaban automáticamente de
+ la clase 
+\emph on
+Show
+\emph default
+.
+ Para que la representación obtenida sea más atractiva, he creado el módulo
+ 
+\emph on
+Mostrar.hs
+\emph default
+, en el que se declaran algunas instancias manualmente:
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+
+\emph on
+Conexion
+\emph default
+: la nueva instancia usa caracteres Unicode para poder representar los operadore
+s de la manera más fiel posible.
+\end_layout
+
+\begin_layout Itemize
+
+\emph on
+Solucion
+\emph default
+: he declarado el tipo 
+\emph on
+Solucion
+\emph default
+ como un 
+\emph on
+newtype
+\emph default
+ (un tipo algebraico que sólo puede contener una etiqueta), lo que permite
+ definir instancias.
+ Ahora las soluciones se muestran indicando primero el escenario inicial,
+ y debajo los cambios, indicando los nodos que abarca cada cambio.
+\end_layout
+
+\end_deeper
+\begin_layout Itemize
+Por ejemplo, el escenario 
+\begin_inset Formula $A_{4}\diamond N_{4}\leftrightarrow Z_{4}\otimes_{d}Z_{4}\otimes_{d}Z_{4}\leftrightarrow R_{d}^{t}\leftrightarrow Z_{6}\otimes_{d}N_{4}\diamond A_{4}$
+\end_inset
+
+ se representaría literalmente como:
+\end_layout
+
+\begin_deeper
+\begin_layout LyX-Code
+escenario = (A4, N4, [(Z4,OpD) , (Z4,OpD) , (Z4,Directa) ,
+\end_layout
+
+\begin_layout LyX-Code
+            (Rd_td,Directa) , (Z6,OpD)], N4, A4)
+\end_layout
+
+\begin_layout Standard
+Al visualizarlo en pantalla, tendríamos:
+\end_layout
+
+\begin_layout Standard
+\align center
+\begin_inset Graphics
+	filename captura.png
+	lyxscale 50
+	width 15cm
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Nota: he hecho las pruebas con Konsole, no sé si funcionará igual con otras
+ terminales.
+\end_layout
+
+\end_deeper
+\begin_layout Itemize
+Un problema es que los cambios se anotan con respecto al escenario al que
+ se aplican, no con respecto al inicial.
+ Eso quiere decir que, en un escenario al que se han aplicado varios cambio,
+ un mismo nodo puede representar varios nodos del escenario inicial.
+ Habría que tener esto en cuenta a la hora de visualizar los cambios.
+\end_layout
+
+\begin_layout Itemize
+He estado reorganizando un poco el código, ya que cada vez hay más módulos.
+ Esta es una de las partes que más tiempo me ha llevado, ya que había módulos
+ muy liosos.
+\end_layout
+
+\begin_layout Itemize
+Como me quedé un poco estancado, estuve pensando en la manera de representar
+ las redes completas como grafos, y cómo obtener todos los posibles caminos
+ desde el nodo inicial hasta el final.
+ Creo que sería interesante discutirlo, ya que podría afectar a lo que estoy
+ desarrollando ahora.
+\end_layout
+
+\end_body
+\end_document

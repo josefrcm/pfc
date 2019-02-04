@@ -1,0 +1,22 @@
+Fichero	Numero de nodos	Numero de enlaces	Conectividad absoluta minima	Conectividad absoluta media	Conectividad absoluta maxima	Conectividad relativa minima	Conectividad relativa media	Conectividad relativa maxima	Densidad	
+ejemplos1/abilene.gml	11	14	2	2.545	3	18.182%	23.140%	27.273%	0.12087912087912088	
+ejemplos1/abovenet.6461.r0.cch.gml	368	966	0	5.250	39	0.000%	1.427%	10.598%	0.0007895386133728102	
+ejemplos1/att.7018.r0.cch.gml	731	2253	0	6.164	55	0.000%	0.843%	7.524%	0.0002881494498355853	
+ejemplos1/att.gml	154	188	1	2.442	29	0.649%	1.585%	18.831%	0.008760951188986232	
+Error en el fichero ejemplos1/belnet.gml: (line 157, column 9):
+unexpected "]"
+expecting space, "+", "-", digit, ".", "\"" or "["
+ejemplos1/colt.gml	43	59	1	2.744	8	2.326%	6.382%	18.605%	0.025131502045587374	
+ejemplos1/cw.gml	33	107	2	6.485	13	6.061%	19.651%	39.394%	0.005819079527420208	
+ejemplos1/dfn.gml	30	97	1	6.467	20	3.333%	21.556%	66.667%	0.006443298969072165	
+ejemplos1/ebone.1755.r0.cch.gml	161	307	0	3.814	17	0.000%	2.369%	10.559%	0.0034276468459262096	
+ejemplos1/exodus.3967.r0.cch.gml	246	540	0	4.390	18	0.000%	1.785%	7.317%	0.0016903731189445476	
+ejemplos1/geant-20041125.gml	23	37	2	3.217	6	8.696%	13.989%	26.087%	0.03453453453453453	
+ejemplos1/geant.gml	23	37	2	3.217	6	8.696%	13.989%	26.087%	0.03453453453453453	
+ejemplos1/level3.3356.r0.cch.gml	625	5298	0	16.954	169	0.000%	2.713%	27.040%	0.000044541833083863436	
+ejemplos1/sprint.1239.r0.cch.gml	549	1593	0	5.803	51	0.000%	1.057%	9.290%	0.00043295573914771597	
+ejemplos1/switch.gml	31	42	1	2.710	10	3.226%	8.741%	32.258%	0.036004645760743324	
+ejemplos1/telekom.gml	10	17	2	3.400	7	20.000%	34.000%	70.000%	0.07352941176470588	
+ejemplos1/tiscali.3257.r0.cch.gml	248	405	0	3.266	31	0.000%	1.317%	12.500%	0.0030314142525363647	
+ejemplos1/verrio.2914.r0.cch.gml	911	2217	0	4.867	46	0.000%	0.534%	5.049%	0.0003708625016080207	
+ejemplos1/vsnl.4755.r0.cch.gml	12	12	0	2.000	4	0.000%	16.667%	33.333%	0.18181818181818182	

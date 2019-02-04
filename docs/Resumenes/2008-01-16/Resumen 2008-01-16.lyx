@@ -1,0 +1,524 @@
+#LyX 1.5.4 created this file. For more info see http://www.lyx.org/
+\lyxformat 276
+\begin_document
+\begin_header
+\textclass scrartcl
+\language spanish
+\inputencoding auto
+\font_roman palatino
+\font_sans default
+\font_typewriter default
+\font_default_family default
+\font_sc false
+\font_osf false
+\font_sf_scale 100
+\font_tt_scale 100
+\graphics default
+\paperfontsize 11
+\spacing single
+\papersize a4paper
+\use_geometry true
+\use_amsmath 1
+\use_esint 0
+\cite_engine basic
+\use_bibtopic false
+\paperorientation portrait
+\leftmargin 2cm
+\topmargin 2cm
+\rightmargin 2cm
+\bottommargin 2cm
+\footskip 1cm
+\secnumdepth 3
+\tocdepth 3
+\paragraph_separation indent
+\defskip medskip
+\quotes_language english
+\papercolumns 1
+\papersides 1
+\paperpagestyle default
+\tracking_changes false
+\output_changes false
+\author "" 
+\author "" 
+\end_header
+
+\begin_body
+
+\begin_layout Part*
+16-1-2008
+\end_layout
+
+\begin_layout Section
+Registro de los cambios
+\end_layout
+
+\begin_layout Itemize
+Debemos decidir una manera de registrar la secuencia de cambios que se aplican
+ para llegar del escenario inicial al final.
+ Interesa que la representación sea compacta y eficiente, evitando redundancias.
+ De momento supondremos que hay definido un tipo de datos llamado 
+\noun on
+Cambios
+\noun default
+.
+\end_layout
+
+\begin_layout Itemize
+En primer lugar, hay que modificar las reglas para que devuelvan los cambios
+ aplicados:
+\end_layout
+
+\begin_deeper
+\begin_layout LyX-Code
+data Cambios = ...
+\end_layout
+
+\begin_layout LyX-Code
+type Regla = Red 
+\begin_inset Formula $\rightarrow$
+\end_inset
+
+ Maybe (Red, Cambios)
+\end_layout
+
+\end_deeper
+\begin_layout Itemize
+También es necesario disponer de una función que recorra el árbol y nos
+ devuelva las posibles soluciones (nodo terminal) junto con la lista de
+ cambios necesarios para llegar a ellas:
+\end_layout
+
+\begin_deeper
+\begin_layout LyX-Code
+type Solucion = (Red, [Cambios])
+\end_layout
+
+\begin_layout LyX-Code
+terminales :: Arbol 
+\begin_inset Formula $\rightarrow$
+\end_inset
+
+ [Soluciones]
+\end_layout
+
+\end_deeper
+\begin_layout Itemize
+La implementación de la función anterior depende de cómo registremos estos
+ cambios en el árbol de soluciones.
+ Este es quizás el paso más complicado, ya que se presentan muchas alternativas.
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+La primera opción sería guardar en cada nodo los cambios que se han aplicado
+ para llegar del nodo padre al actual.
+ Para obtener las soluciones habría que recorrer el árbol acumulando los
+ cambios en una lista.
+ La estructura resultante sería:
+\end_layout
+
+\begin_deeper
+\begin_layout LyX-Code
+data Arbol = Arbol Red Cambios [Arbol]
+\end_layout
+
+\end_deeper
+\begin_layout Itemize
+La estructura anterior tiene un defecto, y es que el nodo raíz no tiene
+ padre, y por tanto tampoco cambios.
+ Esto nos obligaría a introducir algún tipo de cambio nulo.
+ Para evitar este problema podemos registrar los cambios que se producen
+ para llegar del nodo actual a los nodos hijos:
+\end_layout
+
+\begin_deeper
+\begin_layout LyX-Code
+data Arbol = Arbol Red [(Cambios, Arbol)]
+\end_layout
+
+\end_deeper
+\begin_layout Itemize
+La tercera opción es guardar en cada nodo la lista completa de cambios.
+ La longitud de esta lista sería proporcional al nivel del nodo en el árbol,
+ siendo 0 para el nodo raíz.
+ Los cambios se registrarían en el orden en el que se producen, añadiéndolos
+ al final de la lista.
+\end_layout
+
+\begin_deeper
+\begin_layout LyX-Code
+data Arbol = Arbol Red [Cambios] [Arbol]
+\end_layout
+
+\end_deeper
+\begin_layout Itemize
+La opción anterior tiene un gran defecto, y es que almacena mucha información
+ redundante.
+ Por ejemplo, si un nodo tiene una lista de cambios 
+\begin_inset Formula $\left[c_{1},c_{2},c_{3}\ldots c_{n}\right]$
+\end_inset
+
+, sus hijos tendrían una lista 
+\begin_inset Formula $\left[c_{1},c_{2},c_{3}\ldots c_{n},c_{n+1}\right]$
+\end_inset
+
+.
+ Es decir, para cada nodo se repiten 
+\begin_inset Formula $n$
+\end_inset
+
+ elementos, siendo 
+\begin_inset Formula $n$
+\end_inset
+
+ la profundidad del nodo en el árbol.
+ Por tanto, el espacio desperdiciado crece exponencialmente.
+ Sin embargo, podemos aprovechar una característica de los lenguajes funcionales.
+ Éstos suelen definir la listas de manera recursiva, lo que permite que
+ varias listas compartan la misma cola.
+ Si guardamos la lista de cambios en orden inverso, es decir, 
+\begin_inset Formula $\left[c_{n}\ldots c_{3},c_{2},c_{1}\right]$
+\end_inset
+
+, los nodos hijos tendrían una lista 
+\begin_inset Formula $\left[c_{n+1},c_{n}\ldots c_{3},c_{2},c_{1}\right]$
+\end_inset
+
+ y podrían compartir la lista de cambios del padre.
+ La estructura resultante es la misma que en el caso anterior, sólo cambia
+ la forma en la que se registran los cambios.
+\end_layout
+
+\begin_deeper
+\begin_layout LyX-Code
+data Arbol = Arbol Red [Cambios] [Arbol]
+\end_layout
+
+\end_deeper
+\end_deeper
+\begin_layout Itemize
+Cada una de las soluciones anteriores tiene una serie de ventajas y defectos.
+ Las dos primeras son las más compactas, y también las que más facilitan
+ la generación del árbol, pero a costa de complicar el recorrido.
+ Las dos últimas son el caso opuesto.
+ Quizás la opción más equilibrada sea la última, por lo que es la que elegiremos.
+\end_layout
+
+\begin_layout Section
+Implementación
+\end_layout
+
+\begin_layout Itemize
+Elegimos por tanto la cuarta opción.
+ La estructura resultante tiene el siguiente aspecto:
+\end_layout
+
+\begin_deeper
+\begin_layout Standard
+\align center
+\begin_inset Graphics
+	filename arbol.png
+	lyxscale 25
+	width 12cm
+
+\end_inset
+
+
+\end_layout
+
+\end_deeper
+\begin_layout Itemize
+Hay que reescribir las funciones de generación del árbol para que anoten
+ los cambios.
+\end_layout
+
+\begin_deeper
+\begin_layout LyX-Code
+\begin_inset Formula $--$
+\end_inset
+
+ Intenta aplicar todas las reglas a una red
+\end_layout
+
+\begin_layout LyX-Code
+probar_reglas :: [Regla] 
+\begin_inset Formula $\rightarrow$
+\end_inset
+
+ Red 
+\begin_inset Formula $\rightarrow$
+\end_inset
+
+ [(Red, Cambios)]
+\end_layout
+
+\begin_layout LyX-Code
+probar_reglas reglas red = filtrar $ rmap reglas red
+\end_layout
+
+\begin_layout LyX-Code
+\begin_inset Formula $\,$
+\end_inset
+
+
+\end_layout
+
+\begin_layout LyX-Code
+\begin_inset Formula $--$
+\end_inset
+
+ Añade un nodo al principio de varias listas
+\end_layout
+
+\begin_layout LyX-Code
+insertar :: (Router, Conexion) 
+\begin_inset Formula $\rightarrow$
+\end_inset
+
+ [(Red,Cambios)] 
+\begin_inset Formula $\rightarrow$
+\end_inset
+
+ [(Red, Cambios)]
+\end_layout
+
+\begin_layout LyX-Code
+insertar e xs = [(e:elems, cambios) | (elems, cambios) 
+\begin_inset Formula $\leftarrow$
+\end_inset
+
+ xs]
+\end_layout
+
+\begin_layout LyX-Code
+\begin_inset Formula $\,$
+\end_inset
+
+
+\end_layout
+
+\begin_layout LyX-Code
+\begin_inset Formula $--$
+\end_inset
+
+ Expande un nodo del árbol, probando todas las reglas posibles
+\end_layout
+
+\begin_layout LyX-Code
+expandir_nodo :: [Regla] 
+\begin_inset Formula $\rightarrow$
+\end_inset
+
+ Red 
+\begin_inset Formula $\rightarrow$
+\end_inset
+
+ [(Red, Cambios)]
+\end_layout
+
+\begin_layout LyX-Code
+expandir_nodo _ [] = []
+\end_layout
+
+\begin_layout LyX-Code
+expandir_nodo reglas red@(r:rs) = (probar_reglas reglas red)
+\end_layout
+
+\begin_layout LyX-Code
+                   ++ (insertar r $ expandir_nodo reglas rs)
+\end_layout
+
+\begin_layout LyX-Code
+\begin_inset Formula $\,$
+\end_inset
+
+
+\end_layout
+
+\begin_layout LyX-Code
+\begin_inset Formula $--$
+\end_inset
+
+ Genera el árbol a partir de la red inicial
+\end_layout
+
+\begin_layout LyX-Code
+generar_arbol :: [Regla] 
+\begin_inset Formula $\rightarrow$
+\end_inset
+
+ Red 
+\begin_inset Formula $\rightarrow$
+\end_inset
+
+ Arbol
+\end_layout
+
+\begin_layout LyX-Code
+generar_arbol reglas red = generar' reglas red []
+\end_layout
+
+\begin_layout LyX-Code
+    where
+\end_layout
+
+\begin_layout LyX-Code
+    generar' reglas red cambios = Nodo red cambios hijos
+\end_layout
+
+\begin_layout LyX-Code
+        where
+\end_layout
+
+\begin_layout LyX-Code
+        hijos = [generar' reglas r (c:cambios)
+\end_layout
+
+\begin_layout LyX-Code
+                | (r,c) 
+\begin_inset Formula $\leftarrow$
+\end_inset
+
+ expandir_nodo reglas red]
+\end_layout
+
+\end_deeper
+\begin_layout Itemize
+A continuación definimos una función que, dado un árbol, busca todas las
+ soluciones posibles (es decir, los nodos terminales).
+ Como ya se ha dicho anteriormente, hay que invertir la lista de cambios.
+\end_layout
+
+\begin_deeper
+\begin_layout LyX-Code
+terminales :: Arbol 
+\begin_inset Formula $\rightarrow$
+\end_inset
+
+ [Solucion]
+\end_layout
+
+\begin_layout LyX-Code
+terminales (Nodo red cambios []) = [(red, reverse cambios)]
+\end_layout
+
+\begin_layout LyX-Code
+terminales (Nodo _ _ hijos) = concatMap buscar_soluciones hijos
+\end_layout
+
+\end_deeper
+\begin_layout Section
+Trabajos futuros
+\end_layout
+
+\begin_layout Standard
+A partir de las funciones que se han implementado queda casi terminado el
+ núcleo del programa.
+ En principio, sólo quedaría implementar la poda, el criterio de selección
+ de soluciones, y la reconstrucción del camino seguido.
+\end_layout
+
+\begin_layout Itemize
+Por el momento se puede prescindir de la poda.
+ He definido una función 
+\noun on
+podar
+\noun default
+ que simplemente devuelve el árbol sin modificar.
+ Más adelante, cuando esté más avanzado el proyecto, podremos entrar en
+ detalles e implementarla.
+\end_layout
+
+\begin_layout Itemize
+El criterio de selección sería una función que, dada una posible solución,
+ devuelva un valor booleano indicando si es correcta o no.
+ Sólo habría que filtrar la lista devuelta por 
+\noun on
+terminales
+\noun default
+ para tener la lista de soluciones.
+\end_layout
+
+\begin_layout Itemize
+El paso más complejo será reconstruir la secuencia de pasos a partir de
+ la lista de cambios.
+ La implementación de esta función va a estar estrechamente ligada a la
+ manera en la que definamos el tipo de datos 
+\noun on
+Cambios
+\noun default
+.
+ Queda por decidir esta representación.
+\end_layout
+
+\begin_layout Itemize
+Quedaría por implementar la base de reglas, y definir un banco de pruebas
+ inicial.
+\end_layout
+
+\begin_layout Section
+Herramientas y bibliotecas externas
+\end_layout
+
+\begin_layout Standard
+En esta sección voy a comentar una serie de ideas que se me han ocurrido
+ y que podrían ayudar en el desarrollo del proyecto.
+\end_layout
+
+\begin_layout Itemize
+Convendría ir documentando y verificando el código correctamente, para no
+ encontrarnos con sorpresas desagradables más adelante.
+\end_layout
+
+\begin_layout Itemize
+Para la documentación la solución estándar suele ser Haddock, una herramienta
+ similar a Doxygen pero para Haskell.
+ Habría que añadir anotaciones al código que permitirán más adelante generar
+ documentación en HTML.
+\end_layout
+
+\begin_layout Itemize
+Para la verificación la herramienta más usada suele ser QuickCheck.
+ A partir de una lista de propiedades que debe cumplir cada función genera
+ un banco de pruebas, pensado para probar todas las condiciones posibles.
+ Sería interesante pensar qué pruebas pueden diseñarse para este programa.
+\end_layout
+
+\begin_layout Itemize
+Para cargar los ficheros de grafos se pueden usar tres opciones.
+ La más directa, y probablemente la que mayor rendimiento proporcione, sea
+ escribir el cargador manualmente.
+ También es la más compleja, por lo que se descarta.
+ Otra opción es usar Parsec, una biblioteca de combinadores que permite
+ escribir analizadores dentro del propio Haskell.
+ Es muy flexible y potente, y además tiene la ventaja de que no requiere
+ herramientas externas, pero tiene dos desventajas: al combinar el análisis
+ léxico y sintáctico en una sola pasada se puede complicar la gramática,
+ y la compilación del código resultante es extremadamente lenta.
+ La tercera opción es usar Alex y Happy, dos herramientas similares a Lex
+ y Yacc.
+\end_layout
+
+\begin_layout Itemize
+Como ya dije, hay algunas reglas que son de longitud variable.
+ Una opción es usar HaRP, un preprocesador que permite utilizar expresiones
+ regulares en patrones con listas.
+ HaRP lee un fichero en Haskell con anotaciones especiales, y lo traduce
+ a Haskell puro.
+ Por desgracia, usa algunas extensiones propias del GHC, que no todos los
+ compiladores soportan.
+ Conviene por tanto evaluar la complejidad de estas reglas y decidir si
+ es mejor usar HaRP o implementarlas a mano.
+\end_layout
+
+\begin_layout Itemize
+Por último, y ya más a largo plazo, habría que elegir qué biblioteca voy
+ a usar para implementar la interfaz gráfica.
+ Hay muchas opciones, pero la mayoría son experimentales.
+ Las únicas que parecen más maduras son wxHaskell y gtk2hs.
+ Sólo he conseguido compilar la última, así que la elección parece clara.
+ (Nota: desde la última vez que lo probé han aparecido bibliotecas nuevas)
+\end_layout
+
+\end_body
+\end_document

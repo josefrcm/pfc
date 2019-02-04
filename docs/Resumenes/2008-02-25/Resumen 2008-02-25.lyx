@@ -1,0 +1,476 @@
+#LyX 1.5.4 created this file. For more info see http://www.lyx.org/
+\lyxformat 276
+\begin_document
+\begin_header
+\textclass scrartcl
+\language spanish
+\inputencoding auto
+\font_roman palatino
+\font_sans default
+\font_typewriter default
+\font_default_family default
+\font_sc false
+\font_osf false
+\font_sf_scale 100
+\font_tt_scale 100
+\graphics default
+\paperfontsize 11
+\spacing single
+\papersize a4paper
+\use_geometry true
+\use_amsmath 1
+\use_esint 0
+\cite_engine basic
+\use_bibtopic false
+\paperorientation portrait
+\leftmargin 2cm
+\topmargin 2cm
+\rightmargin 2cm
+\bottommargin 2cm
+\footskip 1cm
+\secnumdepth 3
+\tocdepth 3
+\paragraph_separation indent
+\defskip medskip
+\quotes_language english
+\papercolumns 1
+\papersides 1
+\paperpagestyle default
+\tracking_changes false
+\output_changes false
+\author "" 
+\end_header
+
+\begin_body
+
+\begin_layout Part*
+25-2-2008
+\end_layout
+
+\begin_layout Section
+Registro de los cambios (II)
+\end_layout
+
+\begin_layout Itemize
+Se propone un método para registrar los cambios en la topología resultado
+ de aplicar un mecanismo de transición.
+ En primer lugar, se declara el tipo enumerado 
+\emph on
+TipoCambio
+\emph default
+, que identifica a cada una de las reglas.
+\end_layout
+
+\begin_deeper
+\begin_layout LyX-Code
+data TipoCambio = Operador1 | Operador2 | ...
+\end_layout
+
+\end_deeper
+\begin_layout Itemize
+Se ha pensado que la manera más sencilla de registrar los cambios es por
+ medio de una tupla que contenga: el identificador de la regla aplicada,
+ el nodo inicial de la red a partir del cual se aplica, el número de nodos
+ sobre los que se aplica, y el número de nodos resultantes después de aplicarla.
+\end_layout
+
+\begin_deeper
+\begin_layout LyX-Code
+tipo Cambios = (TipoCambio, Int, Int, Int)
+\end_layout
+
+\end_deeper
+\begin_layout Itemize
+Como ya se comentó anteriormente, los cambios se guardan como una lista
+ en el árbol de soluciones.
+ La función 
+\emph on
+terminales
+\emph default
+ devuelve las hojas del árbol (posibles soluciones), que incluyen el escenario
+ final y una lista con los cambios necesarios para llegar hasta él.
+ Se ha definido el tipo de datos 
+\emph on
+Solucion
+\emph default
+ para simplificar la declaración de estas funciones:
+\end_layout
+
+\begin_deeper
+\begin_layout LyX-Code
+type Solucion = (Escenario, [Cambios])
+\end_layout
+
+\begin_layout LyX-Code
+terminales :: Arbol 
+\begin_inset Formula $\rightarrow$
+\end_inset
+
+ [Solucion]
+\end_layout
+
+\end_deeper
+\begin_layout Itemize
+Para calcular el coste de una solución particular, es necesario primero
+ una función que calcule el coste de un cambio.
+ Suponemos que cada cambio es independiente del resto.
+ Una de las ventajas de usar un lenguaje funcional, es que en lugar de limitarno
+s a un criterio concreto, podemos definir varias de estas funciones y pasarlas
+ como parámetro.
+ Definimos el siguiente tipo de datos:
+\end_layout
+
+\begin_deeper
+\begin_layout LyX-Code
+type Coste = Cambios 
+\begin_inset Formula $\rightarrow$
+\end_inset
+
+ Double
+\end_layout
+
+\end_deeper
+\begin_layout Itemize
+Con esta función, calcular el coste de la solución es tan sencillo como
+ calcular el coste de cada cambio por separado y sumar todos los valores:
+\end_layout
+
+\begin_deeper
+\begin_layout LyX-Code
+coste_solucion :: Coste 
+\begin_inset Formula $\rightarrow$
+\end_inset
+
+ Solucion 
+\begin_inset Formula $\rightarrow$
+\end_inset
+
+ Double
+\end_layout
+
+\begin_layout LyX-Code
+coste_solucion f (e, cambios) = foldr (+) 0 (map f cambios)
+\end_layout
+
+\end_deeper
+\begin_layout Itemize
+Por último, quedaría ordenar las soluciones por orden creciente de coste:
+\end_layout
+
+\begin_deeper
+\begin_layout LyX-Code
+ordenar :: Coste 
+\begin_inset Formula $\rightarrow$
+\end_inset
+
+ [Solucion] 
+\begin_inset Formula $\rightarrow$
+\end_inset
+
+ [(Solucion,Double)]
+\end_layout
+
+\begin_layout LyX-Code
+ordenar f xs = sortBy orden $ zip xs (map (coste_sol f) xs)
+\end_layout
+
+\begin_layout LyX-Code
+    where
+\end_layout
+
+\begin_layout LyX-Code
+    orden (_,c1) (_,c2) = compare c1 c2
+\end_layout
+
+\end_deeper
+\begin_layout Standard
+
+\newpage
+
+\end_layout
+
+\begin_layout Section
+Reorganización del código
+\end_layout
+
+\begin_layout Itemize
+Al empezar a implementar la base de reglas entera me he dado cuenta de que
+ es muy extensa, por lo que convenía reorganizarla.
+ Estudiando más a fondo las reglas, he visto que se dividen en cuatro categorías
+:
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+Creación de zonas.
+\end_layout
+
+\begin_layout Itemize
+Operadores de conexión.
+\end_layout
+
+\begin_layout Itemize
+Canonización.
+\end_layout
+
+\begin_layout Itemize
+Mecanismos de transición.
+\end_layout
+
+\end_deeper
+\begin_layout Itemize
+Lo primero que he hecho ha sido separar la implementación de cada tipo de
+ regla en un módulo diferente.
+ Estos módulos son 
+\emph on
+Zonas.hs
+\emph default
+, 
+\emph on
+Conexiones.hs
+\emph default
+, 
+\emph on
+Canonizacion.hs
+\emph default
+ y 
+\emph on
+Mecanismos.hs
+\emph default
+ en el directorio 
+\emph on
+Reglas
+\emph default
+.
+\end_layout
+
+\begin_layout Itemize
+He visto que los tres primeros tipos de reglas se aplican secuencialmente,
+ con el objetivo de simplificar el escenario lo más posible antes de empezar
+ a probar los mecanismos de transición.
+ Por tanto, se pueden aplicar con un función aparte, y no considerarlas
+ en la generación del árbol, lo que reduce considerablemente el tamaño de
+ éste.
+\end_layout
+
+\begin_layout Itemize
+Creo que la implementación del árbol ya está terminada.
+ Quizás haya que modificar algo, pero serán cambios menores.
+ Por tanto, he decidido limpiar la interfaz del módulo.
+ Ahora exporta el tipo 
+\emph on
+Arbol
+\emph default
+, el ADT que representa el árbol de soluciones, y un conjunto de funciones
+ para crear y manipular el árbol.
+ No se exportan los constructores.
+ Las funciones son:
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+
+\emph on
+generar_arbol
+\emph default
+: crea el árbol a partir de la base de reglas y el escenario inicial.
+\end_layout
+
+\begin_layout Itemize
+
+\emph on
+podar
+\emph default
+: recorta aquellas ramas del árbol que no cumplan la condición pasada como
+ parámetro.
+\end_layout
+
+\begin_layout Itemize
+
+\emph on
+terminales
+\emph default
+: devuelve una lista con las hojas del árbol.
+\end_layout
+
+\end_deeper
+\begin_layout Itemize
+He creado el módulo 
+\emph on
+Pruebas.hs
+\emph default
+, que se encarga de ejecutar las pruebas unitarias del resto de módulos.
+ Conforme se me vayan ocurriendo más pruebas las iré añadiendo aquí.
+\end_layout
+
+\begin_layout Section
+QuickCheck
+\end_layout
+
+\begin_layout Standard
+He estado probando el funcionamiento de QuickCheck.
+ Parece bastante potente y sencillo de usar.
+ A continuación comento las primeras impresiones:
+\end_layout
+
+\begin_layout Itemize
+El funcionamiento básico de QuickCheck consiste en definir 
+\emph on
+propiedades
+\emph default
+.
+ En esencia, una propiedad es una función que toma unos valores y verifica
+ si se cumplen determinadas propiedades de una función.
+ Por ejemplo, la siguiente función comprueba que dos reglas de creación
+ de zonas son conmutativas:
+\end_layout
+
+\begin_deeper
+\begin_layout LyX-Code
+prop_conmutativa xs = (zonas1 .
+ zonas2 $ xs) == (zonas2 .
+ zonas1 $ xs)
+\end_layout
+
+\end_deeper
+\begin_layout Itemize
+Las propiedades se invocan llamando a la función 
+\emph on
+quickCheck
+\emph default
+, que toma como parámetro la propiedad a verificar.
+ En principio, genera 100 casos de prueba aleatorios.
+ Si la propiedad se cumple para todos los casos, se considera que la prueba
+ ha sido exitosa, mientras que si alguno de ellos falla, se muestra el caso
+ que ha fallado.
+ Por ejemplo, para verificar el ejemplo anterior, escribiríamos lo siguiente:
+\end_layout
+
+\begin_deeper
+\begin_layout LyX-Code
+> quickCheck prop_conmutativa
+\end_layout
+
+\begin_layout LyX-Code
+OK, passed 100 tests.
+\end_layout
+
+\end_deeper
+\begin_layout Itemize
+Nota: como necesita generar valores aleatorios, la función 
+\emph on
+quickCheck
+\emph default
+ funciona en la mónada 
+\emph on
+IO
+\emph default
+.
+\end_layout
+
+\begin_layout Itemize
+También existe la función 
+\emph on
+verboseCheck
+\emph default
+, que muestra cada caso antes de probarlo.
+\end_layout
+
+\begin_layout Itemize
+QuickCheck necesita un par de funciones auxiliares para poder generar los
+ valores aleatorios.
+ Estas funciones están recogidas en la clase 
+\emph on
+Arbitrary
+\emph default
+.
+ Se proporcionan instancias para los tipos de datos básicos (cadenas, enteros,
+ listas, etc.), pero si se quieren usar tipos definidos por el usuario hay
+ que implementarlos manualmente.
+ De momento, se ha implementado la clase para los tipos 
+\emph on
+Router
+\emph default
+ y 
+\emph on
+Conexion
+\emph default
+.
+\end_layout
+
+\begin_layout Itemize
+QuickCheck también proporciona una biblioteca de combinadores que permiten
+ construir propiedades más complejas.
+ Por ejemplo, el operador de implicación 
+\emph on
+a ==> b
+\emph default
+ verifica que si la propiedad se cumple para 
+\emph on
+a
+\emph default
+, también tiene que cumplirse para 
+\emph on
+b
+\emph default
+.
+\end_layout
+
+\begin_layout Itemize
+Quizás el aspecto más complicado sea determinar que propiedades deben cumplir
+ las funciones.
+ De momento, he definido tres propiedades triviales:
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+La aplicación de una regla de simplificación siempre reduce el número de
+ nodos de la red (o por lo menos lo mantiene igual).
+\end_layout
+
+\begin_layout Itemize
+Dadas dos reglas de simplificación, la aplicación de ambas es conmutativa.
+\end_layout
+
+\begin_layout Itemize
+Tras la aplicación de las reglas de creación de zonas no puede ocurrir que
+ haya dos zonas 
+\begin_inset Formula $\left\{ Z_{4},Z_{6},Z_{d}\right\} $
+\end_inset
+
+ adyacentes del mismo tipo.
+\end_layout
+
+\end_deeper
+\begin_layout Itemize
+Existe la posibilidad de modificar los parámetros de QuickCheck, haciendo
+ que pruebe un mayor número de casos por ejemplo.
+\end_layout
+
+\begin_layout Standard
+Parece que QuickCheck es una herramienta bastante útil.
+ Aunque no cubre todos los tipos de pruebas que podemos hacer, y desde luego
+ no es un sustituto de una batería de pruebas al estilo tradicional, si
+ que es un buen complemento.
+ Al probar casos aleatorios es bastante probable encontrar alguno que no
+ hubieramos tenido en cuenta al definir la batería de pruebas.
+ Además, QuickCheck ayuda a documentar el código a modo de especificación
+ funcional.
+\end_layout
+
+\begin_layout Section
+HaRP
+\end_layout
+
+\begin_layout Standard
+También he estado mirando HaRP.
+ En principio, parece ser muy potente, en la documentación aparecen ejemplos
+ de todo tipo de expresiones regulares complejas sobre listas muy interesantes.
+ El problema es que no hay una versión estable.
+ He tenido que actualizar todo el GHC para poder compilarlo.
+ Aún no he podido probarlo, en cuanto haga decidiré si es útil usarlo o
+ no.
+\end_layout
+
+\end_body
+\end_document

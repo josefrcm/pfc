@@ -1,0 +1,358 @@
+#LyX 1.5.4 created this file. For more info see http://www.lyx.org/
+\lyxformat 276
+\begin_document
+\begin_header
+\textclass scrartcl
+\language spanish
+\inputencoding auto
+\font_roman palatino
+\font_sans default
+\font_typewriter default
+\font_default_family default
+\font_sc false
+\font_osf false
+\font_sf_scale 100
+\font_tt_scale 100
+\graphics default
+\paperfontsize 11
+\spacing single
+\papersize a4paper
+\use_geometry true
+\use_amsmath 1
+\use_esint 0
+\cite_engine basic
+\use_bibtopic false
+\paperorientation portrait
+\leftmargin 2cm
+\topmargin 2cm
+\rightmargin 2cm
+\bottommargin 2cm
+\footskip 1cm
+\secnumdepth 3
+\tocdepth 3
+\paragraph_separation indent
+\defskip medskip
+\quotes_language english
+\papercolumns 1
+\papersides 1
+\paperpagestyle default
+\tracking_changes false
+\output_changes false
+\author "" 
+\author "" 
+\end_header
+
+\begin_body
+
+\begin_layout Part*
+11-9-2008
+\end_layout
+
+\begin_layout Section
+Búsqueda de rutas en el grafo
+\end_layout
+
+\begin_layout Itemize
+He dividido el proceso de búsqueda de rutas en tres partes: conversión del
+ grafo en un árbol, podado del árbol, y recorrido del árbol para obtener
+ los caminos finales.
+ Lo he hecho así para poder modificar de manera más sencilla los criterios
+ de poda, desacoplándolos de las otras dos partes del proceso.
+\end_layout
+
+\begin_layout Itemize
+En la primera parte del proceso, el grafo se convierte en un árbol 
+\emph on
+n-ario
+\emph default
+.
+ Para ello, se parte del nodo origen de las rutas, que será la raíz del
+ árbol, y se visitan los nodos adyacentes, que serán los nodos hijos.
+ Se van anotando los nodos visitados, y se repite el proceso recursivamente
+ hasta que ya no quedan más nodos por visitar.
+ Por ejemplo, dado el siguiente grafo:
+\end_layout
+
+\begin_deeper
+\begin_layout Standard
+\align center
+\begin_inset Graphics
+	filename grafo.png
+	lyxscale 50
+	scale 15
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Obtendríamos un árbol como el siguiente (nota, el árbol no está completo
+ porque sería demasiado grande, es sólo a modo de ejemplo):
+\end_layout
+
+\begin_layout Standard
+\align center
+\begin_inset Graphics
+	filename desenrollado.png
+	lyxscale 50
+	scale 15
+
+\end_inset
+
+
+\end_layout
+
+\end_deeper
+\begin_layout Itemize
+Una vez obtenido el árbol, se puede podar si se desea reducir el número
+ de rutas posibles.
+ Para redes pequeñas no es necesario, pero en redes grandes como la de AT&T
+ es imprescindible, ya que de lo contrario el número de rutas entre dos
+ nodos es tan elevado que puede tardar horas en procesarlas todas.
+ Un criterio de poda que se ha visto que da buen resultado es el siguiente:
+ si dos nodos A y B son adyacentes, se descartan todas aquellas rutas que
+ conecten A y B a través de uno o más nodos intermedios.
+ La implementación de este criterio es bastante sencilla; se realiza podando
+ aquellas rutas que pasen por nodos adyacentes a los ya visitados.
+\end_layout
+
+\begin_layout Itemize
+Por último, se recorre el árbol ya podado, buscando el nodo destino de la
+ ruta.
+ Se hace un recorrido recursivo sobre el árbol, acumulando los nodos visitados
+ en una lista.
+ Si se llega al nodo destino, se devuelve la lista con todos los nodos de
+ la ruta.
+ Si se llega a un nodo que no tiene adyacentes, se devuelve una lista vacía.
+\end_layout
+
+\begin_layout Itemize
+Otra opción para acelerar la búsqueda de rutas sería preprocesar el grafo,
+ eliminando nodos y enlaces innecesarios.
+ Por ejemplo, se podrían borrar todos los nodos que forman caminos sin salida.
+ Una idea que he probado y parece que también funciona bien es la de convertir
+ el grafo en dirigido, clasificando los nodos por su distancia al origen
+ y eliminando aquellos enlaces que impliquen retroceder en el grafo, es
+ decir, volver a un nodo más cercano al origen.
+ De esta manera se eliminan gran parte de los bucles.
+ Por ejemplo, para el grafo anterior, si buscáramos la rutas entre los nodos
+ A y F, el resultado sería:
+\end_layout
+
+\begin_deeper
+\begin_layout Standard
+\align center
+\begin_inset Graphics
+	filename dirigido.png
+	lyxscale 50
+	scale 14
+
+\end_inset
+
+
+\end_layout
+
+\end_deeper
+\begin_layout Section
+Aplicación de reglas
+\end_layout
+
+\begin_layout Itemize
+Como ya se comentó, es necesario clasificar las reglas en dos categorías:
+ aquellas que sólo tienen en cuenta la red de interconexión entre los nodos
+ finales, y las que procesan el escenario entero.
+ Para ello he creado dos tipos de datos, a los que llamo 
+\emph on
+ReglaC
+\emph default
+ y 
+\emph on
+ReglaP
+\emph default
+ (de 
+\begin_inset Quotes eld
+\end_inset
+
+completa
+\begin_inset Quotes erd
+\end_inset
+
+ y 
+\begin_inset Quotes eld
+\end_inset
+
+parcial
+\begin_inset Quotes erd
+\end_inset
+
+).
+\end_layout
+
+\begin_layout Itemize
+Las reglas completas sólo se pueden aplicar de una manera posible, pero
+ puede ocurrir que una regla parcial se pueda aplicar de varias maneras
+ a un escenario.
+ Por ejemplo, la regla de canonización 
+\begin_inset Formula $Z_{4}\otimes_{d}Z_{4}=Z_{4}$
+\end_inset
+
+ aplicada al escenario 
+\begin_inset Formula $Z_{4}\otimes_{d}Z_{4}\leftrightarrow Z_{6}\leftrightarrow Z_{4}\otimes_{d}Z_{4}$
+\end_inset
+
+ podría dar dos resultados:
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+\begin_inset Formula $Z_{4}\leftrightarrow Z_{6}\leftrightarrow Z_{4}\otimes_{d}Z_{4}$
+\end_inset
+
+
+\end_layout
+
+\begin_layout Itemize
+\begin_inset Formula $Z_{4}\otimes_{d}Z_{4}\leftrightarrow Z_{6}\leftrightarrow Z_{4}$
+\end_inset
+
+
+\end_layout
+
+\end_deeper
+\begin_layout Itemize
+Para resolver estos casos he escrito una función llamada 
+\emph on
+aplicarReglaP
+\emph default
+, que toma una regla y un escenario y devuelve una lista con el resultado
+ de aplicar la regla en cada posible posición del escenario.
+\end_layout
+
+\begin_layout Itemize
+He modificado la función de generación del árbol.
+ Ahora toma una lista de reglas completas y otra de reglas parciales, e
+ intenta aplicarlas todas.
+ He probado el escenario 
+\begin_inset Formula $A_{6}\diamond N_{6}\leftrightarrow Z_{4}\otimes_{d}Z_{4}\otimes_{d}Z_{4}\leftrightarrow R_{d}^{t}\leftrightarrow Z_{6}\leftrightarrow N_{6}\diamond A_{6}$
+\end_inset
+
+ con los operadores de conexión y de canonización, obteniendo el siguiente
+ árbol:
+\end_layout
+
+\begin_layout Standard
+\align center
+\begin_inset Graphics
+	filename captura1.png
+	lyxscale 50
+	width 15cm
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Itemize
+A partir del árbol anterior se obtienen los siguientes escenarios finales,
+ con su respectiva lista de cambios:
+\end_layout
+
+\begin_layout Standard
+\align center
+\begin_inset Graphics
+	filename captura2.png
+	lyxscale 50
+	width 15cm
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Section
+Tareas pendientes
+\end_layout
+
+\begin_layout Itemize
+Puesto que ya funcionan la búsqueda de rutas y la aplicación de reglas,
+ queda pendiente la tarea de integrar los dos procesos; es decir, generar
+ los escenarios a partir de las rutas y aplicar las reglas estos escenarios.
+ Esto no debería llevar mucho tiempo, y permitiría tener la parte más importante
+ de la aplicación funcionando.
+\end_layout
+
+\begin_layout Itemize
+Como se puede ver en el ejemplo anterior, el actual modelo de aplicación
+ de reglas introduce muchas reduncancias, ya que en un escenario en el que
+ se pueda aplicar una regla parcial en múltiples puntos, se terminarán probando
+ todas las posibles permutaciones.
+ Si en un ejemplo tan sencillo surgen 5 soluciones iguales, en un escenario
+ complejo puede ser mucho peor.
+ Por ello habría que establecer algún criterio que eliminase estas redundancias.
+ Algunas ideas que se me ocurren son:
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+Elegir únicamente la primera aplicación exitosa de una regla parcial.
+ Si hay otras opciones, se probarán en niveles inferiores del árbol.
+\end_layout
+
+\begin_layout Itemize
+Dada una red 
+\begin_inset Formula $R_{1}op_{1}R_{2}\mathit{op_{2}}\ldots\mathit{op_{n-1}}R_{n}$
+\end_inset
+
+, si se puede aplicar una regla a los nodos 
+\begin_inset Formula $R_{i}\ldots R_{j}$
+\end_inset
+
+, se descarta cualquier posible aplicación que empiece en un nodo situado
+ entre estos dos.
+ Es decir, se eliminan las aplicaciones que sean subconjuntos de otra mayor,
+ eligiendo sólo las más largas.
+\end_layout
+
+\begin_layout Itemize
+Las reglas se clasifican por niveles, de menor a mayor complejidad.
+ Se podría forzar a que las reglas se aplicasen de manera escalonada, subiendo
+ de nivel sólo en caso de que no se pueda aplicar ninguna regla de nivel
+ inferior.
+\end_layout
+
+\end_deeper
+\begin_layout Itemize
+He probado las tres bibliotecas para crear interfaces de usuario más importantes
+ que hay: 
+\noun on
+gtk2hs
+\noun default
+, 
+\noun on
+wxHaskell
+\noun default
+, y 
+\noun on
+qtHaskell
+\noun default
+.
+ De momento no he conseguido que funcione ninguna; 
+\noun on
+gtk2hs
+\noun default
+ y 
+\noun on
+wxHaskell
+\noun default
+ no compilan, mientras que 
+\noun on
+qtHaskell
+\noun default
+ si lo hace, pero no hay documentación y no consigo probar los ejemplos.
+ Intentaré hacer funcionar alguna de ellas, y si no lo consigo, buscaré
+ otra opción.
+\end_layout
+
+\end_body
+\end_document

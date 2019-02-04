@@ -1,0 +1,246 @@
+#LyX 1.5.4 created this file. For more info see http://www.lyx.org/
+\lyxformat 276
+\begin_document
+\begin_header
+\textclass scrartcl
+\language spanish
+\inputencoding auto
+\font_roman palatino
+\font_sans default
+\font_typewriter default
+\font_default_family default
+\font_sc false
+\font_osf false
+\font_sf_scale 100
+\font_tt_scale 100
+\graphics default
+\paperfontsize 11
+\spacing single
+\papersize a4paper
+\use_geometry true
+\use_amsmath 1
+\use_esint 0
+\cite_engine basic
+\use_bibtopic false
+\paperorientation portrait
+\leftmargin 2cm
+\topmargin 2cm
+\rightmargin 2cm
+\bottommargin 3cm
+\footskip 1cm
+\secnumdepth 3
+\tocdepth 3
+\paragraph_separation indent
+\defskip medskip
+\quotes_language english
+\papercolumns 1
+\papersides 1
+\paperpagestyle default
+\tracking_changes false
+\output_changes false
+\author "" 
+\author "" 
+\end_header
+
+\begin_body
+
+\begin_layout Part*
+8-10-2008
+\end_layout
+
+\begin_layout Section
+Consideraciones sobre la aplicación de las reglas
+\end_layout
+
+\begin_layout Itemize
+He terminado de implementar la base de reglas completa, hasta llegar a las
+ reglas de creación de túneles.
+ Durante el proceso me he dado cuenta de una serie de detalles que creo
+ que hay que valorar con más detenimiento.
+\end_layout
+
+\begin_layout Itemize
+Aunque vienen definidas para escenarios completos, parece que las reglas
+ de creación de túneles entre zonas (ZZ) sólo se aplican en realidad a la
+ red de interconexión, por lo que serían reglas parciales.
+\end_layout
+
+\begin_layout Itemize
+Los túneles entre nodo terminal y zona (ZN) se definen también para escenarios
+ completos.
+ Sin embargo, me he dado cuenta de que, si se aplican directamente, muchos
+ escenarios no se pueden simplificar.
+ Por ejemplo, dada la regla
+\end_layout
+
+\begin_deeper
+\begin_layout Standard
+\begin_inset Formula \[
+\begin{array}{l}
+T_{v6\left(v4\right)}\left(A1\diamond\underline{N_{d}\leftrightarrow Z_{6}op_{1}Z_{4}}\leftrightarrow N2\diamond A2\right)=A1\diamond N_{d}\leftrightarrow Z_{4}\leftrightarrow N2\diamond A2\\
+\textrm{\qquad donde}\; op_{1}\in\left\{ \otimes_{d},\boxtimes_{d}\right\} \end{array}\]
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+y el escenario
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula \[
+A_{4}\diamond N_{d}\leftrightarrow Z_{6}\otimes_{d}Z_{4}\odot_{4}Z_{4}\leftrightarrow N_{d}\diamond A_{4}\]
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+no se podría simplificar, ya que el túnel sólo cubre los dos primeros nodos.
+ Por tanto, creo que habría que extender este tipo de reglas, de manera
+ que los nodos que estén después del final del túnel no sean tenidos en
+ cuenta y se dejen como están.
+\end_layout
+
+\end_deeper
+\begin_layout Itemize
+Las reglas para túneles entre nodos terminales (NN) son problemáticas, porque
+ dado un escenario 
+\begin_inset Formula $E_{1}$
+\end_inset
+
+ hay reglas que llevan a 
+\begin_inset Formula $E_{2}$
+\end_inset
+
+, y otras que de 
+\begin_inset Formula $E_{2}$
+\end_inset
+
+ vuelven a 
+\begin_inset Formula $E_{1}$
+\end_inset
+
+.
+ El resultado es que si las aplicamos sin cuidado, podemos entrar en un
+ bucle infinito.
+ Para evitarlo he añadido una restricción: estas reglas sólo se aplican
+ al final, cuando ya no quedan más opciones, y se aplica como mucho una
+ sola de todo el conjunto NN.
+\end_layout
+
+\begin_layout Itemize
+Las reglas de canonización sólo definen cómo simplificar conexiones de zonas
+ del mismo tipo, es decir, 
+\begin_inset Formula $Z_{4}opZ_{4}$
+\end_inset
+
+, 
+\begin_inset Formula $Z_{6}opZ_{6}$
+\end_inset
+
+ y 
+\begin_inset Formula $Z_{d}opZ_{d}$
+\end_inset
+
+.
+ Sin embargo, no existe ninguna manera de simplificar conexiones del tipo
+ 
+\begin_inset Formula $Z_{4}opZ_{d}$
+\end_inset
+
+ o 
+\begin_inset Formula $Z_{6}opZ_{d}$
+\end_inset
+
+.
+ Como las zonas duales pueden comportarse como zonas IPv4 o IPv6, se me
+ ocurre que podrían sustituirse por este tipo de zonas según convenga.
+\end_layout
+
+\begin_layout Itemize
+He hecho algunas pruebas, e incluso en escenarios simples se pueden encontrar
+ varios miles de soluciones.
+ La mayoría tienen sentido, pero hay algunas que no.
+ Por ejemplo, dada una red puramente IPv4, no tendría sentido crear un túnel
+ IPv6 en IPv4, y a su vez otro túnel IPv4 en IPv6 dentro de éste.
+ Por otro lado, si para una red dada se puede establecer una conexión directa
+ sin usar túneles, se podrían descartar el resto de soluciones de esa misma
+ red.
+\end_layout
+
+\begin_layout Itemize
+He hecho algunas pequeñas modificaciones a la representación interna de
+ las redes, lo que simplifica la implementación de las reglas de longitud
+ variable.
+ Por otro lado, he implementado una función (
+\emph on
+calcular_coste
+\emph default
+) que calcula el coste de una solución a partir del coste de cada cambio
+ individual, y otra función (
+\emph on
+ordenar
+\emph default
+) que ordena las soluciones por orden creciente de coste.
+ Ambas funcionan correctamente, por lo que sólo quedaría por hacer sería
+ crear la interfaz para que el usuario pudiera establecer los costes de
+ cada mecanismo.
+\end_layout
+
+\begin_layout Itemize
+Por otro lado, faltan por implementar los mecanismos de transición para
+ aquellos escenario que no tengan solución, así como crear una batería de
+ pruebas exhaustiva.
+\end_layout
+
+\begin_layout Section
+Interfaz de usuario
+\end_layout
+
+\begin_layout Itemize
+Después de bastante esfuerzo, he conseguido compilar 
+\noun on
+gtk2hs
+\noun default
+.
+ Estuve leyendo la documentación, y es bastante completa.
+ La manera de diseñar interfaces parece sencilla: se modelan las ventanas
+ y diálogos con Glade, se guarda la definición en un fichero XML, se carga
+ el fichero en la aplicación y se establecen los manejadores de señal.
+ He creado un editor de grafos a modo de prueba:
+\end_layout
+
+\begin_deeper
+\begin_layout Standard
+\align center
+\begin_inset Graphics
+	filename captura.png
+	lyxscale 50
+	width 14cm
+
+\end_inset
+
+
+\end_layout
+
+\end_deeper
+\begin_layout Itemize
+El editor dispone de tres opciones: editar nodos ya existentes, crear nuevos
+ nodos, y enlazar dos nodos.
+ También se puede configurar el color con el que se desea que se muestre
+ cada tipo de router (IPv4, IPv6, dual, etc.), así como el tipo de router
+ que se asignará a los nuevos nodos que se creen.
+\end_layout
+
+\begin_layout Itemize
+En principio, esta interfaz es sólo un ejemplo.
+ Hay que integrarla con el resto del programa, y añadir el resto de opciones
+ que faltan, pero el proceso parece mucho más sencillo de lo que esperaba.
+\end_layout
+
+\end_body
+\end_document

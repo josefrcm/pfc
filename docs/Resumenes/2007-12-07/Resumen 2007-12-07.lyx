@@ -1,0 +1,474 @@
+#LyX 1.5.4 created this file. For more info see http://www.lyx.org/
+\lyxformat 276
+\begin_document
+\begin_header
+\textclass scrartcl
+\language spanish
+\inputencoding auto
+\font_roman palatino
+\font_sans default
+\font_typewriter default
+\font_default_family default
+\font_sc false
+\font_osf false
+\font_sf_scale 100
+\font_tt_scale 100
+\graphics default
+\paperfontsize 11
+\spacing single
+\papersize a4paper
+\use_geometry true
+\use_amsmath 1
+\use_esint 0
+\cite_engine basic
+\use_bibtopic false
+\paperorientation portrait
+\leftmargin 2cm
+\topmargin 2cm
+\rightmargin 2cm
+\bottommargin 2cm
+\footskip 1cm
+\secnumdepth 3
+\tocdepth 3
+\paragraph_separation indent
+\defskip medskip
+\quotes_language english
+\papercolumns 1
+\papersides 1
+\paperpagestyle default
+\tracking_changes false
+\output_changes false
+\author "" 
+\end_header
+
+\begin_body
+
+\begin_layout Part*
+7-12-2007
+\end_layout
+
+\begin_layout Section
+Representación de los escenarios
+\end_layout
+
+\begin_layout Itemize
+La primera pregunta que surge es: ¿cómo representamos los escenarios, y
+ más concretamente, la red que conecta los nodos finales?
+\end_layout
+
+\begin_layout Itemize
+Parece claro que para los nodos, routers, y aplicaciones finales que forman
+ la red utilizamos un tipo enumerado.
+\end_layout
+
+\begin_deeper
+\begin_layout LyX-Code
+data Aplicacion = A4 | A6 | Ad
+\end_layout
+
+\begin_layout LyX-Code
+data Nodo = N4 | N6 | Nd | Nmap
+\end_layout
+
+\begin_layout LyX-Code
+data Router = R4 | R6 | Rd | R4t ...
+\end_layout
+
+\end_deeper
+\begin_layout Itemize
+¿Qué ocurre con los operadores de conexión? Si sólo hubiera uno, podríamos
+ usar una simple lista, pero como hay varios tenemos que recurrir a una
+ estructura más compleja.
+\end_layout
+
+\begin_layout Itemize
+Si analizamos en profundidad el problema, se puede ver que los escenarios
+ son, por así decirlo, expresiones matemáticas que hay que simplificar por
+ medio de una serie de reglas.
+ La manera habitual de representar expresiones matemáticas es por medio
+ de un árbol, pero como todos los operadores tienen la misma precedencia
+ y asociatividad, basta con una estructura lineal.
+\end_layout
+
+\begin_layout Itemize
+Podemos considerar por tanto tres opciones:
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+Definir un tipo enumerado para los routers y otro para los operadores, y
+ representar la red como una lista de tuplas 
+\emph on
+(Router,Operador)
+\emph default
+, donde el campo 
+\emph on
+Operador
+\emph default
+ indica el mecanismo de conexión usado entre ese router y el siguiente nodo
+ de la red.
+ Los tipos de datos resultantes serían:
+\end_layout
+
+\begin_deeper
+\begin_layout LyX-Code
+data Operador = Directa | OpD | Op4t | OpDt ...
+\end_layout
+
+\begin_layout LyX-Code
+type Red = [(Router,Operador)]
+\end_layout
+
+\end_deeper
+\begin_layout Itemize
+La representación anterior tiene un problema, y es que permite definir redes
+ vacías.
+ Si queremos evitar esto, podemos definir nuestro propio tipo de datos lineal
+ que garantice que las redes tengan siempre al menos un elemento:
+\end_layout
+
+\begin_deeper
+\begin_layout LyX-Code
+data Operador = Directa | OpD | Op4t | OpDt ...
+\end_layout
+
+\begin_layout LyX-Code
+data Red = Rama Router Red
+\end_layout
+
+\begin_layout LyX-Code
+         | Hoja Router
+\end_layout
+
+\end_deeper
+\begin_layout Itemize
+La tercera opción es similar a la anterior, pero en lugar de representar
+ los operadores como un tipo enumerado, lo hacemos por medio de los constructore
+s de la propia estructura de datos.
+ Esto tiene la ventaja de que las reglas se pueden representar de una manera
+ más compacta y natural, pero tiene la desventaja de que en algunas reglas
+ aparecen operadores variables, lo que obliga a añadir un caso por cada
+ posible operador.
+ El código resultante sería:
+\end_layout
+
+\begin_deeper
+\begin_layout LyX-Code
+data Red = Directa Router Red
+\end_layout
+
+\begin_layout LyX-Code
+         | OpD Router Red
+\end_layout
+
+\begin_layout LyX-Code
+         | Op4t Router Red
+\end_layout
+
+\begin_layout LyX-Code
+         ...
+\end_layout
+
+\begin_layout LyX-Code
+         | Final Nodo
+\end_layout
+
+\end_deeper
+\end_deeper
+\begin_layout Itemize
+De momento no está clara cual es la mejor opción.
+ Se ha elegido la primera, ya que parece que es la que permite escribir
+ las reglas de la manera más simple.
+\end_layout
+
+\begin_layout Section
+Representación de las reglas
+\end_layout
+
+\begin_layout Itemize
+Puesto que estamos trabajando con un lenguaje funcional, lo más sencillo
+ es representar cada regla con una función.
+\end_layout
+
+\begin_layout Itemize
+Necesitamos una manera de indicar que una regla no es aplicable.
+ Para ello, podemos usar el tipo 
+\noun on
+Maybe
+\noun default
+: si una regla tiene éxito, devuelve 
+\noun on
+Just x
+\noun default
+, y si no se puede aplicar, devuelve 
+\noun on
+Nothing
+\noun default
+.
+ Definimos un tipo para las reglas:
+\end_layout
+
+\begin_deeper
+\begin_layout LyX-Code
+type Regla = Red 
+\begin_inset Formula $\rightarrow$
+\end_inset
+
+ Maybe Red
+\end_layout
+
+\end_deeper
+\begin_layout Itemize
+Aquí surgen dos dudas:
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+¿Cómo representamos las reglas de longitud variables? La mayoría de las
+ reglas son de longitud fija, y está claro que para esos casos lo más sencillo
+ es utilizar patrones.
+ Pero en algunas reglas el número de nodos puede variar.
+ Hay una extensión que permite usar expresiones regulares en los patrones,
+ que quizás podría servir.
+ La otra opción es implementar estas reglas a mano, aunque sea más difícil.
+\end_layout
+
+\begin_layout Itemize
+¿Cómo anotamos los cambios efectuados por cada regla? Necesitamos conocer
+ los cambios para poder reconstruir el camino seguido una vez que alcancemos
+ una solución válida.
+\end_layout
+
+\end_deeper
+\begin_layout Itemize
+Las funciones que representan las reglas tendrían la siguiente forma:
+\end_layout
+
+\begin_deeper
+\begin_layout LyX-Code
+regla1 :: Regla
+\end_layout
+
+\begin_layout LyX-Code
+regla1 ((zi,Directa) : (Rd,Directa) : zj) = Just $ (zi,OpD) : zj
+\end_layout
+
+\begin_layout LyX-Code
+regla1 _ = Nothing
+\end_layout
+
+\end_deeper
+\begin_layout Itemize
+Definimos una lista que contenga a todas las funciones anteriores, para
+ poder referenciar rápidamente todas las reglas:
+\end_layout
+
+\begin_deeper
+\begin_layout LyX-Code
+reglas :: [Reglas]
+\end_layout
+
+\begin_layout LyX-Code
+reglas = [regla1, regla2, ...
+ reglaN]
+\end_layout
+
+\end_deeper
+\begin_layout Section
+Generación del árbol de búsqueda
+\end_layout
+
+\begin_layout Itemize
+Una vez que sabemos como representar los escenarios y hemos definido las
+ reglas, podemos generar el árbol de búsqueda.
+\end_layout
+
+\begin_layout Itemize
+Existen múltiples maneras de representar el árbol.
+ Por ejemplo, podríamos definir constructores distintos para las ramas y
+ las hojas, o entre hojas que son solución y hojas que no lo son, pero creemos
+ que no es necesario.
+ Puesto que el árbol es N-ario, los hijos de un nodo son una lista.
+ Un nodo es terminal si la lista está vacía.
+\end_layout
+
+\begin_deeper
+\begin_layout LyX-Code
+data Arbol a = Arbol a [Arbol a]
+\end_layout
+
+\end_deeper
+\begin_layout Itemize
+Definimos una función que aplica una lista de funciones (reglas) a un único
+ valor (escenario).
+ Puesto que esta función es la inversa de 
+\emph on
+map
+\emph default
+, se le ha denominado 
+\emph on
+rmap
+\emph default
+.
+\end_layout
+
+\begin_deeper
+\begin_layout LyX-Code
+rmap :: [a
+\begin_inset Formula $\rightarrow$
+\end_inset
+
+b] 
+\begin_inset Formula $\rightarrow$
+\end_inset
+
+ a 
+\begin_inset Formula $\rightarrow$
+\end_inset
+
+ [b]
+\end_layout
+
+\begin_layout LyX-Code
+rmap fs x = [f x | f <- fs]
+\end_layout
+
+\end_deeper
+\begin_layout Itemize
+Filtramos para eliminar los valores 
+\noun on
+Nothing
+\noun default
+.
+\end_layout
+
+\begin_deeper
+\begin_layout LyX-Code
+filtrar :: [Maybe Red] 
+\begin_inset Formula $\rightarrow$
+\end_inset
+
+ [Red]
+\end_layout
+
+\begin_layout LyX-Code
+filtrar [] = []
+\end_layout
+
+\begin_layout LyX-Code
+filtrar (Just x : xs) = x : filtrar xs
+\end_layout
+
+\begin_layout LyX-Code
+filtrar (Nothing : xs) = filtrar xs
+\end_layout
+
+\end_deeper
+\begin_layout Itemize
+Combinamos estas dos funciones en una tercera que prueba todas las reglas
+ posibles para un escenario concreto:
+\end_layout
+
+\begin_deeper
+\begin_layout LyX-Code
+probar_reglas :: [Regla] 
+\begin_inset Formula $\rightarrow$
+\end_inset
+
+ Red 
+\begin_inset Formula $\rightarrow$
+\end_inset
+
+ [Red]
+\end_layout
+
+\begin_layout LyX-Code
+probar_reglas reglas red = filtrar $ rmap reglas red
+\end_layout
+
+\end_deeper
+\begin_layout Itemize
+A continuación, creamos una función que obtenga todos los resultados posibles
+ de aplicar las reglas a un nodo del árbol.
+ Hay que tener en cuenta que las reglas pueden aplicarse no sólo al principio
+ de la red, sino también en el medio.
+\end_layout
+
+\begin_deeper
+\begin_layout LyX-Code
+expandir_nodo :: [Regla] 
+\begin_inset Formula $\rightarrow$
+\end_inset
+
+ Red 
+\begin_inset Formula $\rightarrow$
+\end_inset
+
+ [Red]
+\end_layout
+
+\begin_layout LyX-Code
+expandir_nodo _ [] = []
+\end_layout
+
+\begin_layout LyX-Code
+expandir_nodo reglas red@(r:rs) = (probar_reglas reglas red) ++ (map (r:)
+ $ expandir_nodo reglas rs)
+\end_layout
+
+\end_deeper
+\begin_layout Itemize
+Una vez que tenemos definidas estas funciones, generar el árbol es trivial.
+ Aquí tenemos la ventaja de que al usar un lenguaje perezoso podemos definir
+ el árbol entero sin miedo a quedarnos sin memoria.
+\end_layout
+
+\begin_deeper
+\begin_layout LyX-Code
+generar_arbol :: [Regla] 
+\begin_inset Formula $\rightarrow$
+\end_inset
+
+ Red 
+\begin_inset Formula $\rightarrow$
+\end_inset
+
+ Arbol
+\end_layout
+
+\begin_layout LyX-Code
+generar_arbol reglas red = Arbol red hijos
+\end_layout
+
+\begin_layout LyX-Code
+        where
+\end_layout
+
+\begin_layout LyX-Code
+        hijos = map (generar_arbol reglas) $ expandir_nodo reglas red
+\end_layout
+
+\end_deeper
+\begin_layout Itemize
+Una vez generado el árbol, queda procesarlo.
+ Aquí surgen muchas dudas:
+\end_layout
+
+\begin_deeper
+\begin_layout Itemize
+El árbol puede ser muy profundo, por lo que necesitamos podarlo lo antes
+ posible.
+ ¿Qué criterios de poda hay?
+\end_layout
+
+\begin_layout Itemize
+¿Cómo se determina que una solución (nodo terminal) es correcta? Supongo
+ que sólo sirven las redes de un nodo.
+\end_layout
+
+\begin_layout Itemize
+¿Cómo reconstruimos la secuencia de pasos a través del árbol?
+\end_layout
+
+\end_body
+\end_document
