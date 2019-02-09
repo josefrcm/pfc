@@ -1,0 +1,6 @@
+flags: {}
+packages:
+- .
+extra-deps:
+- harp-0.4.3.2@sha256:e89479a3815e2b1001858f89c83aa56f5ed752571aa5b056a3a0e8ffbfdefa7a
+resolver: lts-12.26

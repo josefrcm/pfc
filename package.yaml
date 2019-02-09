@@ -1,0 +1,68 @@
+name:                tunneler
+version:             0.2.0.0
+github:              "josefrcm/pfc"
+license:             BSD3
+author:              "José Franco Campos"
+maintainer:          "josefrancocampos@gmail.com"
+copyright:           "2019 José Franco Campos"
+
+extra-source-files:
+- README.md
+- CHANGELOG.md
+
+# Metadata used when publishing your package
+# synopsis:            Short description of your package
+# category:            Web
+
+# To avoid duplicated efforts in documentation and dealing with the
+# complications of embedding Haddock markup inside cabal files, it is
+# common to point users to the README.md file.
+description:         Please see the README on GitHub at <https://github.com/josefrcm/tunneler#readme>
+
+dependencies:
+- base >= 4.7
+- gtk >= 0.14
+- cairo >= 0.13
+- containers >= 0.5
+- QuickCheck >= 2.11
+- filepath >= 1.4
+- parsec >= 3.1
+- harp >= 0.4
+- text >= 0.9
+- directory >=1.0
+- html-entities >= 1.1
+
+library:
+  source-dirs: src
+
+executables:
+  tunneler:
+    main:                Main.hs
+    source-dirs:         app
+    ghc-options:
+    - -threaded
+    - -rtsopts
+    - -with-rtsopts=-N
+    - -Wall
+    - -funbox-strict-fields
+    dependencies:
+    - tunneler
+    default-extensions:
+    - PatternGuards
+    - RankNTypes
+
+tests:
+  tunneler-test:
+    main:                Spec.hs
+    source-dirs:         test
+    ghc-options:
+    - -threaded
+    - -rtsopts
+    - -with-rtsopts=-N
+    - -Wall
+    - -funbox-strict-fields
+    dependencies:
+    - tunneler
+    default-extensions:
+    - PatternGuards
+    - RankNTypes
